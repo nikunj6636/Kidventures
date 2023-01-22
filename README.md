@@ -6,4 +6,4 @@
 - Nikunj Garg
 
 # Project Aim :
-Project yet to be decided.
+Project yet to be decided
