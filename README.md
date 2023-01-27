@@ -1,9 +1,14 @@
-# Project Team Members
+# SD Team Members
 
-- Divij
+**- Divij
 - Pranav Agrawal
 - Aman Raj
-- Nikunj Garg
+- Nikunj Garg**
 
-# Project Aim :
-Project yet to be decided
+# Product :
+**Building an app for children wellness and learning centers.**
+
+# Client :
+**Ikiminds**
+
+"Let us build something amazing together"
