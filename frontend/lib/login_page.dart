@@ -150,7 +150,7 @@ class _MyLoginPage extends State<MyLoginPage> {
                         ? 'OTP PAGE'
                         : is_signin == true
                             ? 'LOGIN PAGE'
-                            : 'SIGN IN PAGE',
+                            : 'SIGN UP PAGE',
                     style: TextStyle(
                       fontFamily: AutofillHints.name,
                       fontWeight: FontWeight.bold,
@@ -251,7 +251,9 @@ class _MyLoginPage extends State<MyLoginPage> {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => MyApp()));
+                                          builder: (context) => MyApp(
+                                            username_signup.text,
+                                            )));
                                 } else {
                                   showDialog(
                                       context: context,
@@ -374,7 +376,9 @@ class _MyLoginPage extends State<MyLoginPage> {
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) =>
-                                                        MyApp()));
+                                                        MyApp(
+                                                          username_signin.text,
+                                                        )));
                                           } else {
                                             showDialog(
                                                 context: context,
