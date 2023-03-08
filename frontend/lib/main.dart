@@ -12,7 +12,11 @@ void main() {
 }
 
 class MyApp extends StatefulWidget {
-  MyApp({Key? key}) : super(key: key);
+  final String email;
+  MyApp(
+    this.email, {
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -63,7 +67,7 @@ class _MyAppState extends State<MyApp> {
         return;
       }
 
-      parent_err = false; 
+      parent_err = false;
       new_name = newname;
       edit_parent = false;
     });
@@ -109,6 +113,8 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
+    email_id = widget.email;
+    
     new_email = email_id;
     new_number = mobile_number;
     new_name = parent_name;
