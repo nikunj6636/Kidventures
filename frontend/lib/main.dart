@@ -63,6 +63,7 @@ class _MyAppState extends State<MyApp> {
         return;
       }
 
+      parent_err = false; 
       new_name = newname;
       edit_parent = false;
     });
@@ -80,11 +81,11 @@ class _MyAppState extends State<MyApp> {
         return;
       }
 
+      number_err = false;
       new_number = int.parse(newphone);
       edit_number = false;
     });
   }
-
 
   // current date
   DateTime current = new DateTime(1000);
@@ -145,7 +146,7 @@ class _MyAppState extends State<MyApp> {
                     fontSize: 40,
                     color: Colors.purple),
               ),
-              Row(children: [
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 SizedBox(
                   width: 150,
                   child: TextField(
@@ -161,22 +162,22 @@ class _MyAppState extends State<MyApp> {
                   ),
                 ),
                 edit_parent == false
-                    ? ElevatedButton(
+                    ? IconButton(
                         onPressed: () {
                           setState(() {
                             edit_parent = true;
                           });
                         },
-                        child: Icon(Icons.edit),
+                        icon: Icon(Icons.edit),
                       )
-                    : ElevatedButton(
+                    : IconButton(
                         onPressed: () {
                           updateParentName(name.text);
                         },
-                        child: Icon(Icons.done)),
+                        icon: Icon(Icons.done)),
                 edit_parent == false
                     ? SizedBox()
-                    : ElevatedButton(
+                    : IconButton(
                         onPressed: () {
                           setState(() {
                             name.text = new_name;
@@ -184,9 +185,9 @@ class _MyAppState extends State<MyApp> {
                             edit_parent = false;
                           });
                         },
-                        child: Icon(Icons.cancel_outlined))
+                        icon: Icon(Icons.cancel_outlined))
               ]),
-              Row(children: [
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 SizedBox(
                   width: 150,
                   child: TextField(
@@ -205,22 +206,22 @@ class _MyAppState extends State<MyApp> {
                   ),
                 ),
                 edit_number == false
-                    ? ElevatedButton(
+                    ? IconButton(
                         onPressed: () {
                           setState(() {
                             edit_number = true;
                           });
                         },
-                        child: Icon(Icons.edit),
+                        icon: Icon(Icons.edit),
                       )
-                    : ElevatedButton(
+                    : IconButton(
                         onPressed: () {
                           updateMobileNumber(number.text);
                         },
-                        child: Icon(Icons.done)),
+                        icon: Icon(Icons.done)),
                 edit_number == false
                     ? SizedBox()
-                    : ElevatedButton(
+                    : IconButton(
                         onPressed: () {
                           setState(() {
                             number.text = new_number.toString();
@@ -228,13 +229,13 @@ class _MyAppState extends State<MyApp> {
                             edit_number = false;
                           });
                         },
-                        child: Icon(Icons.cancel_outlined))
+                        icon: Icon(Icons.cancel_outlined))
               ]),
-              Row(children: [
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 SizedBox(
-                  width: 150,
+                  width: 196,
                   child: TextField(
-                    enabled: false, 
+                    enabled: false,
                     controller: email,
                     decoration: InputDecoration(
                         labelText:
@@ -246,7 +247,6 @@ class _MyAppState extends State<MyApp> {
                         hintText: "Enter your Email Address"),
                   ),
                 ),
-                
               ]),
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
