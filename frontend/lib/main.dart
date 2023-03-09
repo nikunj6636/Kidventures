@@ -114,7 +114,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     email_id = widget.email;
-    
+
     new_email = email_id;
     new_number = mobile_number;
     new_name = parent_name;
@@ -154,7 +154,11 @@ class _MyAppState extends State<MyApp> {
               ),
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 SizedBox(
-                  width: 150,
+                  width: 
+                  edit_parent == false ? 
+                  160
+                  :
+                  120,
                   child: TextField(
                     controller: name,
                     enabled: edit_parent,
@@ -195,7 +199,11 @@ class _MyAppState extends State<MyApp> {
               ]),
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 SizedBox(
-                  width: 150,
+                  width: 
+                  edit_number == false ? 
+                  160
+                  :
+                  120,
                   child: TextField(
                     enabled: edit_number,
                     maxLength: 10,
@@ -239,7 +247,7 @@ class _MyAppState extends State<MyApp> {
               ]),
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 SizedBox(
-                  width: 196,
+                  width: 200,
                   child: TextField(
                     enabled: false,
                     controller: email,
@@ -309,10 +317,12 @@ class _MyAppState extends State<MyApp> {
                                   },
                                 ),
                                 DropDownField(
+                                  
                                   controller: gender_controller,
                                   hintText: 'Select Gender',
                                   enabled: true,
                                   items: items,
+
                                   itemsVisibleInDropdown: 3,
                                   onValueChanged: (value) => {
                                     setState(() {
@@ -342,7 +352,7 @@ class _MyAppState extends State<MyApp> {
                                       Gender.add(gender_controller.text);
                                     });
 
-                                    print(ListOfChildren);
+                                    // print(ListOfChildren);
                                     Navigator.pop(context);
                                     return;
                                   },
@@ -361,12 +371,15 @@ class _MyAppState extends State<MyApp> {
                   ? SizedBox()
                   : Accordion(
                       maxOpenSections: 1,
+                      
                       children: ListOfChildren.map((e) {
                         var index = ListOfChildren.indexOf(e);
                         var name = Name[index];
                         var age = Age[index];
-                        var gender = Gender[index];
+                        var gender = Gender[index]
+                        ;
                         return AccordionSection(
+                           
                             header: Text(name),
                             content: Column(
                               children: [
@@ -377,6 +390,7 @@ class _MyAppState extends State<MyApp> {
                             ));
                       }).toList(),
                     ),
+              Text(''),
               ElevatedButton(
                   onPressed: () {
                     Navigator.push(context,
