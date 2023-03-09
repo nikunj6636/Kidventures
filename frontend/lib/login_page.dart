@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:hello_app/main.dart';
+import 'package:App/main.dart';
 import 'package:intl/intl.dart';
 import 'package:flat_3d_button/flat_3d_button.dart';
 import 'package:flutter_timer_countdown/flutter_timer_countdown.dart';
+
+import 'dart:math';
 
 class MyLoginPage extends StatefulWidget {
   MyLoginPage({Key? key}) : super(key: key);
@@ -40,8 +42,12 @@ class _MyLoginPage extends State<MyLoginPage> {
   // OTP number for sign up purpose
   int generateOTP() {
     // Some method here
+    Random random = new Random();
 
-    return 123456;
+    int random_number = random.nextInt(899999) + 100000;
+
+    print(random_number);
+    return random_number;
   }
 
   // Actual OTP value
@@ -105,7 +111,7 @@ class _MyLoginPage extends State<MyLoginPage> {
   }
 
   // Duration
-  Duration myDur = Duration(minutes : 5);
+  Duration myDur = Duration(minutes: 5);
 
   @override
   void initState() {
@@ -206,15 +212,19 @@ class _MyLoginPage extends State<MyLoginPage> {
                                 width: 200,
                                 child: TextField(
                                   controller: otp,
+                                  maxLength: 6,
                                   decoration: InputDecoration(
                                     labelText: 'OTP',
                                     labelStyle: TextStyle(color: Colors.purple),
                                   ),
                                 )),
-                            Text('Session will expire in: ',style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.red,
-                            ),),
+                            Text(
+                              'Session will expire in: ',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.red,
+                              ),
+                            ),
                             Text(''),
                             TimerCountdown(
                               endTime: DateTime.now().add(myDur),
@@ -252,8 +262,8 @@ class _MyLoginPage extends State<MyLoginPage> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => MyApp(
-                                            username_signup.text,
-                                            )));
+                                                username_signup.text,
+                                              )));
                                 } else {
                                   showDialog(
                                       context: context,
@@ -292,13 +302,12 @@ class _MyLoginPage extends State<MyLoginPage> {
                                 foregroundColor: Colors.white,
                                 label: Text('Request Another OTP'),
                                 onPressed: () {
-                                  
                                   setState(() {
                                     OTP = generateOTP();
                                   });
                                   sendOTP();
                                   setState(() {
-                                    myDur = Duration(minutes : 5);
+                                    myDur = Duration(minutes: 5);
                                   });
                                   showDialog(
                                       context: context,
@@ -339,6 +348,7 @@ class _MyLoginPage extends State<MyLoginPage> {
                                 Container(
                                     width: 200,
                                     child: TextField(
+                                      obscureText: true,
                                       controller: password_signin,
                                       decoration: InputDecoration(
                                         labelText: 'Password',
@@ -375,8 +385,7 @@ class _MyLoginPage extends State<MyLoginPage> {
                                             Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        MyApp(
+                                                    builder: (context) => MyApp(
                                                           username_signin.text,
                                                         )));
                                           } else {
@@ -428,6 +437,7 @@ class _MyLoginPage extends State<MyLoginPage> {
                                 Container(
                                     width: 200,
                                     child: TextField(
+                                      obscureText: true,
                                       controller: password_signup,
                                       decoration: InputDecoration(
                                         labelText: 'Create A Password',
@@ -438,6 +448,7 @@ class _MyLoginPage extends State<MyLoginPage> {
                                 Container(
                                     width: 200,
                                     child: TextField(
+                                      obscureText: true,
                                       controller: confirm_password,
                                       decoration: InputDecoration(
                                         labelText: 'Confirm Password',
