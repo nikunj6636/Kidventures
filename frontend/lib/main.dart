@@ -1,3 +1,4 @@
+import 'package:App/booking_module.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:dropdownfield2/dropdownfield2.dart';
@@ -13,7 +14,13 @@ void main() {
 
 class MyApp extends StatefulWidget {
   final String email;
+  final List<String> Name;
+  final List<String> Age;
+  final List<String> Gender;
   MyApp(
+    this.Name,
+    this.Age,
+    this.Gender,
     this.email, {
     Key? key,
   }) : super(key: key);
@@ -114,6 +121,12 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     email_id = widget.email;
+    Name = widget.Name;
+    Age = widget.Age;
+    Gender = widget.Gender;
+    
+    print("Inside main module");
+    print(Name);
 
     new_email = email_id;
     new_number = mobile_number;
@@ -154,11 +167,7 @@ class _MyAppState extends State<MyApp> {
               ),
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 SizedBox(
-                  width: 
-                  edit_parent == false ? 
-                  160
-                  :
-                  120,
+                  width: edit_parent == false ? 160 : 120,
                   child: TextField(
                     controller: name,
                     enabled: edit_parent,
@@ -199,11 +208,7 @@ class _MyAppState extends State<MyApp> {
               ]),
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 SizedBox(
-                  width: 
-                  edit_number == false ? 
-                  160
-                  :
-                  120,
+                  width: edit_number == false ? 160 : 120,
                   child: TextField(
                     enabled: edit_number,
                     maxLength: 10,
@@ -317,12 +322,10 @@ class _MyAppState extends State<MyApp> {
                                   },
                                 ),
                                 DropDownField(
-                                  
                                   controller: gender_controller,
                                   hintText: 'Select Gender',
                                   enabled: true,
                                   items: items,
-
                                   itemsVisibleInDropdown: 3,
                                   onValueChanged: (value) => {
                                     setState(() {
@@ -367,19 +370,16 @@ class _MyAppState extends State<MyApp> {
                         });
                   },
                   child: Text('+ ADD A CHILD')),
-              ListOfChildren.length == 0
+              Name.length == 0
                   ? SizedBox()
                   : Accordion(
                       maxOpenSections: 1,
-                      
-                      children: ListOfChildren.map((e) {
-                        var index = ListOfChildren.indexOf(e);
+                      children: Name.map((e) {
+                        var index = Name.indexOf(e);
                         var name = Name[index];
                         var age = Age[index];
-                        var gender = Gender[index]
-                        ;
+                        var gender = Gender[index];
                         return AccordionSection(
-                           
                             header: Text(name),
                             content: Column(
                               children: [
@@ -421,6 +421,20 @@ class _MyAppState extends State<MyApp> {
           ],
           currentIndex: i,
           onTap: (int index) {
+            if (index == 1) {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          MyBookingModule(Name, Age, Gender, email.text)));
+              return;
+            }
+            if (index == 2) {
+              return;
+            }
+            if (index == 0) {
+              return;
+            }
             setState(() {
               i = index;
             });
