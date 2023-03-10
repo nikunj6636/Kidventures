@@ -20,6 +20,8 @@ class _MyLoginPage extends State<MyLoginPage> {
 
   bool is_otp = false;
 
+  bool stop_timer = false;
+
   // Username and password for sign in case
   TextEditingController username_signin = TextEditingController();
 
@@ -226,44 +228,54 @@ class _MyLoginPage extends State<MyLoginPage> {
                               ),
                             ),
                             Text(''),
-                            TimerCountdown(
-                              endTime: DateTime.now().add(myDur),
-                              format: CountDownTimerFormat.minutesSeconds,
-                              onEnd: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return AlertDialog(
-                                        title: Text('Session Timeout'),
-                                        content: Text(
-                                            'Oops! Looks like your session has expired.'),
-                                        actions: [
-                                          OutlinedButton(
-                                              child: Text('OK'),
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            MyLoginPage()));
-                                              })
-                                        ],
-                                      );
-                                    });
-                              },
-                            ),
+                            stop_timer == false
+                                ? TimerCountdown(
+                                    endTime: DateTime.now().add(myDur),
+                                    format: CountDownTimerFormat.minutesSeconds,
+                                    onEnd: () {
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return AlertDialog(
+                                              title: Text('Session Timeout'),
+                                              content: Text(
+                                                  'Oops! Looks like your session has expired.'),
+                                              actions: [
+                                                OutlinedButton(
+                                                    child: Text('OK'),
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  MyLoginPage()));
+                                                    })
+                                              ],
+                                            );
+                                          });
+                                    },
+                                  )
+                                : SizedBox(),
                             ElevatedButton(
                               onPressed: () {
                                 String res = OTP.toString();
                                 if (res == otp.text) {
                                   // Redirect to the Profile Page
+                                  setState(() {
+                                    stop_timer = true;
+                                  });
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => MyApp(
+                                                [],
+                                                [],
+                                                [],
                                                 username_signup.text,
                                               )));
+                                  return;
                                 } else {
                                   showDialog(
                                       context: context,
@@ -386,6 +398,9 @@ class _MyLoginPage extends State<MyLoginPage> {
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) => MyApp(
+                                                          [],
+                                                          [],
+                                                          [],
                                                           username_signin.text,
                                                         )));
                                           } else {
