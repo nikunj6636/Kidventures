@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class LocationPage extends StatefulWidget {
   const LocationPage({Key? key}) : super(key: key);
@@ -48,7 +50,11 @@ class _LocationPageState extends State<LocationPage> {
     if (!hasPermission) return;
     await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
         .then((Position position) {
-      setState(() => _currentPosition = position);
+      setState(() {
+        _currentPosition = position;
+        latitude = _currentPosition!.latitude;
+        longtitude = _currentPosition!.longitude;
+      });
       _getAddressFromLatLng(_currentPosition!);
     }).catchError((e) {
       debugPrint(e);
@@ -67,6 +73,28 @@ class _LocationPageState extends State<LocationPage> {
     }).catchError((e) {
       debugPrint(e);
     });
+  }
+
+  double latitude = 0;
+  double longtitude = 0;
+  Future<void> fetchCentres() async {
+    final response = await http.post(
+      Uri.parse('http://localhost:5000/location/nearest'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, double>{
+        'latitude': latitude,
+        'longtitude': longtitude,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      final array =
+          jsonDecode(response.body); // array of children(json objects)
+      
+      print(array);
+    }
   }
 
   @override

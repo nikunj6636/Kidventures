@@ -21,6 +21,8 @@ class MyListView extends StatefulWidget {
 }
 
 class _MyList extends State<MyListView> {
+
+  
   int index = 0;
   Centre centre = Centre(center_name: '', address: '', distance: 0);
   int selectedindex = 0;
