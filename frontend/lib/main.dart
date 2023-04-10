@@ -18,7 +18,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(
             seedColor: Colors.blue), // Colors.fromRGB(0,0,255)
       ),
-      home: AuthenticationPage(), // start with authentication module and navigate to MainPage
+      home:
+          AuthenticationPage(), // start with authentication module and navigate to MainPage
     );
   }
 }

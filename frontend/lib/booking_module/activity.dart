@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:multiselect/multiselect.dart';
 
 import 'package:App/profile/profile.dart' show Child;
+import 'location.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -205,6 +206,25 @@ class _MyActivityModule extends State<MyActivityModule> {
         },
         child: Text(
           'Find Centres Nearby',
+          style: TextStyle(
+            fontSize: 20,
+            fontFamily: AutofillHints.name,
+            color: Colors.white,
+          ),
+        ),
+        style: ButtonStyle(
+          backgroundColor: MaterialStatePropertyAll<Color>(Colors.green),
+          mouseCursor: MaterialStatePropertyAll<MouseCursor>(MouseCursor.defer),
+        ),
+      ),
+
+      ElevatedButton(
+        onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => LocationPage()));
+        },
+        child: Text(
+          'GET FKING LOCATION',
           style: TextStyle(
             fontSize: 20,
             fontFamily: AutofillHints.name,

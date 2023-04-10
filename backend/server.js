@@ -31,3 +31,16 @@ app.use("/parent/", require("./Routes/parent"));
 app.listen(port, () => {
   console.log("Server is running at port", port);
 });
+
+
+
+
+// if(navigator.geolocation){
+// navigator.geolocation.getCurrentPosition((position)=>{
+//     const latitude = position.coords.latitude
+//     const longtitude = position.coords.longitude 
+//     console.log(latitude,longtitude);
+// },(error)=>{
+//     console.log(error)
+// });
+// }
