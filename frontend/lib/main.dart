@@ -2,9 +2,14 @@ import 'package:App/authentication_module/authen_main.dart';
 import 'package:App/booking_module/booking.dart';
 import 'package:flutter/material.dart';
 import 'package:App/booking_module/location.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   runApp(MyApp());
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive, overlays: [
+    SystemUiOverlay.bottom,
+    SystemUiOverlay.top,
+  ]);
 }
 
 class MyApp extends StatelessWidget {

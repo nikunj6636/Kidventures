@@ -234,23 +234,7 @@ class _MyPartyModule extends State<MyPartyModule> {
               ],
             ),
             Text(''),
-      ElevatedButton(
-      onPressed: (){
-
-      },
-      child: Text(
-        'Find Centres Nearby',
-      style: TextStyle(
-        fontSize: 20,
-        fontFamily: AutofillHints.name,
-        color: Colors.white,
-        ),
-        ),
       
-      style: ButtonStyle(
-          backgroundColor: MaterialStatePropertyAll<Color>(Colors.green),
-          mouseCursor:  MaterialStatePropertyAll<MouseCursor>(MouseCursor.defer),
-        ),),
             ],
           ),
         ),

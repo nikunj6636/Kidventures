@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flat_3d_button/flat_3d_button.dart';
-
+import 'location.dart';
 import 'activity.dart';
 import 'party.dart';
 
@@ -60,7 +60,26 @@ class _MyBookingModule extends State<MyBookingModule> {
 
         party_booking
             ? MyPartyModule(widget.email)
-            : MyActivityModule(widget.email)
+            : MyActivityModule(widget.email),
+        ElevatedButton(
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => LocationPage()));
+          },
+          child: Text(
+            'Find Centers Nearby',
+            style: TextStyle(
+              fontSize: 20,
+              fontFamily: AutofillHints.name,
+              color: Colors.white,
+            ),
+          ),
+          style: ButtonStyle(
+            backgroundColor: MaterialStatePropertyAll<Color>(Colors.green),
+            mouseCursor:
+                MaterialStatePropertyAll<MouseCursor>(MouseCursor.defer),
+          ),
+        )
       ]),
     );
   }

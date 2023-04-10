@@ -14,6 +14,7 @@ class LocationPage extends StatefulWidget {
 class _LocationPageState extends State<LocationPage> {
   String? _currentAddress;
   Position? _currentPosition;
+  bool is_pos = false;
 
   Future<bool> _handleLocationPermission() async {
     bool serviceEnabled;
@@ -56,6 +57,7 @@ class _LocationPageState extends State<LocationPage> {
         longtitude = _currentPosition!.longitude;
       });
       _getAddressFromLatLng(_currentPosition!);
+      fetchCentres();
     }).catchError((e) {
       debugPrint(e);
     });
@@ -75,8 +77,34 @@ class _LocationPageState extends State<LocationPage> {
     });
   }
 
+  // Future<void> _AddressFromLatandLong(double lat, double long) async {
+  //   await placemarkFromCoordinates(lat, long).then((value) {
+  //     Placemark place = value[0];
+
+  //     String s =
+  //         '${place.street} , ${place.subLocality} , ${place.subAdministrativeArea} , ${place.country}';
+
+  //     setState(() {
+  //       list_of_address.add(s);
+  //     });
+  //   }).catchError((e) {
+  //     debugPrint(e);
+  //   });
+  // }
+
+  // Future<void> GetAddressforList(List l) async {
+  //   for (int i = 0; i < l.length; i++) {
+  //     final element = l[i];
+
+  //     await _AddressFromLatandLong(
+  //         element['center']['Latitude'], element['center']['Longtitude']);
+  //   }
+  // }
+
   double latitude = 0;
   double longtitude = 0;
+
+  bool fetched = false;
   Future<void> fetchCentres() async {
     final response = await http.post(
       Uri.parse('http://10.1.128.246:5000/location/nearest'),
@@ -93,31 +121,130 @@ class _LocationPageState extends State<LocationPage> {
       final array =
           jsonDecode(response.body); // array of children(json objects)
 
+      // Now get the desired info from the data
+      if (fetched == false) {
+        setState(() {
+          for (int i = 0; i < array.length; i++) {
+            list_of_centers.add({
+              'center_name': array[i]['center']['ID'],
+              'address': array[i]['center']['address'],
+              'distance': array[i]['distance'],
+            });
+          }
+          is_pos = true;
+          fetched = true;
+        });
+      }
+
       print(array);
     }
+  }
+
+  List<dynamic> list_of_centers = [];
+
+  int selectedindex = 0;
+  @override
+  void initState() {
+    _getCurrentPosition().then((value) {
+      fetchCentres();
+    });
+
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Location Page")),
-      body: SafeArea(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('LAT: ${_currentPosition?.latitude ?? ""}'),
-              Text('LNG: ${_currentPosition?.longitude ?? ""}'),
-              Text('ADDRESS: ${_currentAddress ?? ""}'),
-              const SizedBox(height: 32),
-              ElevatedButton(
-                onPressed: _getCurrentPosition,
-                child: const Text("Get Current Location"),
-              )
-            ],
-          ),
-        ),
-      ),
+      body: is_pos == true
+          ? SingleChildScrollView(
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(''),
+                    Center(
+                        child: SingleChildScrollView(
+                            child: Container(
+                                child: Column(
+                      children: [
+                        Row(children: [
+                          Text(
+                            'Select Nearby Centers',
+                            style: TextStyle(
+                                fontFamily: AutofillHints.name,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 30,
+                                color: Colors.purple),
+                          )
+                        ]),
+                        Text(''),
+                        Column(
+                          children: list_of_centers.map((e) {
+                            return ListTile(
+                              title: Container(
+                                child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        e['center_name'],
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(e['address'],
+                                          style: TextStyle(
+                                            color: Colors.grey,
+                                          )),
+                                      Text(e['distance'].toStringAsFixed(2) +
+                                          ' km from your current location'),
+                                      Text(''),
+                                    ]),
+                              ),
+                              leading: Radio<int>(
+                                splashRadius: 15,
+                                hoverColor: Colors.yellow,
+                                activeColor: Colors.green,
+                                value: list_of_centers.indexOf(e),
+                                groupValue: selectedindex,
+                                onChanged: (int? value) {
+                                  setState(() {
+                                    selectedindex = value ?? 0;
+                                  });
+                                },
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                        Text(''),
+                        ElevatedButton(
+                            onPressed: () {},
+                            child: Text('Proceed To Payment')),
+                        Text(''),
+                        ElevatedButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text('Go Back')),
+                      ],
+                    )))),
+                  ],
+                ),
+              ),
+            )
+          : Container(
+            alignment: Alignment.center,
+            child : 
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(),
+                  Text('Please wait while we load a list of centers...'),
+                
+              
+            ])),
     );
   }
 }

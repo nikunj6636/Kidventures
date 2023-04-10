@@ -332,7 +332,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       content: Column(
                         children: [
                           Text('Name: ' + name),
-                          Text('DOB : ' + dateOfBirth),
+                          Text('DOB : ' + dateOfBirth.substring(0,10)),
                           Text('Gender: ' + gender),
                         ],
                       ));

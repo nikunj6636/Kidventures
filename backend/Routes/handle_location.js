@@ -42,20 +42,25 @@ router.post('/nearest', async (request,response)=>{
     
     const centers = [
         {
-            'Latitude' : 37.888,
-            'Longtitude' : -122,
-            'ID' : '1',
+            'Latitude' : 17.44215798501415,
+            'Longtitude' : 78.35763801329668,
+            'address' : 'Lingampally Road, Hyderabad - 500032',
+            'ID' : 'CENTRE #1',
 
         },
+        
         {
-            'Latitude' : 38.76,
-            'Longtitude' : -122.08,
-            'ID' : '2',
+            'Latitude' :  17.443577315844962,
+            'Longtitude' : 78.36605805461083,
+            'address' : 'Mahabaleshwar clinics, Near Hehe road, Gachibowli Hyderabad 500031',
+            'ID' : 'CENTRE #2',
         },
+        
         {
-            'Latitude' : 35.44,
-            'Longtitude' : -121.76,
-            'ID' : '3',
+            'Latitude' : 17.45009531328669,
+            'Longtitude' :  78.33886021962053,
+            'address' : 'Mujes, Kiess, Plot No 43 , Hehe Nagar, Hyderabad',
+            'ID' : 'CENTRE #3',
 
         },
 
@@ -80,7 +85,8 @@ router.post('/nearest', async (request,response)=>{
         return a.distance - b.distance;
     })
 
-    response.status(201).send(distances.slice(0,5)); 
+
+    response.status(200).send(distances.slice(0,5)); 
 })
 
 module.exports = router;
