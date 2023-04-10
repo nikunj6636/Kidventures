@@ -23,7 +23,7 @@ class _DetailsPage extends State<DetailsPage> {
   List<String> Errors = [
     'Name cannot be empty',
     'Phone number contains digits from 0-9',
-        'Phone number must be of 10 digits',
+    'Phone number must be of 10 digits',
   ];
 
   int signup = 3;
@@ -37,7 +37,7 @@ class _DetailsPage extends State<DetailsPage> {
       return 2;
     else {
       final response = await http.post(
-        Uri.parse('http://localhost:5000/parent/signup'),
+        Uri.parse('http://10.1.128.246:5000/parent/signup'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -51,8 +51,7 @@ class _DetailsPage extends State<DetailsPage> {
 
       if (response.statusCode == 200) {
         return signup;
-      }
-      else {
+      } else {
         throw Exception('Failed to connect to server');
       }
     }
@@ -107,8 +106,8 @@ class _DetailsPage extends State<DetailsPage> {
                         height: 10,
                       ),
                       ElevatedButton(
-                        onPressed:
-                          () =>  validateInfo(name.text, phoneno.text).then((value) {
+                        onPressed: () =>
+                            validateInfo(name.text, phoneno.text).then((value) {
                           if (value == signup) {
                             Navigator.push(
                                 context,

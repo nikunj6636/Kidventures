@@ -49,7 +49,7 @@ class _MyActivityModule extends State<MyActivityModule> {
 
   Future<void> fetchChild() async {
     final response = await http.post(
-      Uri.parse('http://localhost:5000/parent/children'),
+      Uri.parse('http://10.1.128.246:5000/parent/children'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -199,24 +199,6 @@ class _MyActivityModule extends State<MyActivityModule> {
         ),
       ),
       Text(''),
-      ElevatedButton(
-        onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => SelectCenter()));
-        },
-        child: Text(
-          'Find Centres Nearby',
-          style: TextStyle(
-            fontSize: 20,
-            fontFamily: AutofillHints.name,
-            color: Colors.white,
-          ),
-        ),
-        style: ButtonStyle(
-          backgroundColor: MaterialStatePropertyAll<Color>(Colors.green),
-          mouseCursor: MaterialStatePropertyAll<MouseCursor>(MouseCursor.defer),
-        ),
-      ),
 
       ElevatedButton(
         onPressed: () {
@@ -224,7 +206,7 @@ class _MyActivityModule extends State<MyActivityModule> {
               context, MaterialPageRoute(builder: (context) => LocationPage()));
         },
         child: Text(
-          'GET FKING LOCATION',
+          'Find Centers Nearby',
           style: TextStyle(
             fontSize: 20,
             fontFamily: AutofillHints.name,

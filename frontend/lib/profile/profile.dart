@@ -46,9 +46,12 @@ class _ProfilePageState extends State<ProfilePage> {
   List<dynamic> children = []; // list of children
   TextEditingController email = TextEditingController();
 
+  // Boolean variables
+  bool loaded_ch = false;
+
   Future<void> updateProfile() async {
     final response = await http.put(
-      Uri.parse('http://localhost:5000/parent/update/profile'),
+      Uri.parse('http://10.1.128.246:5000/parent/update/profile'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -108,7 +111,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<void> fetchProfile() async {
     final response = await http.post(
-      Uri.parse('http://localhost:5000/parent/profile'),
+      Uri.parse('http://10.1.128.246:5000/parent/profile'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -126,7 +129,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
       // children
       final childresponse = await http.post(
-        Uri.parse('http://localhost:5000/parent/children'),
+        Uri.parse('http://10.1.128.246:5000/parent/children'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -148,6 +151,7 @@ class _ProfilePageState extends State<ProfilePage> {
           }
 
           children = ne;
+          loaded_ch = true;
         });
       }
     } else {
@@ -157,7 +161,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<void> addChild(String name, String DOB, String gender) async {
     final response = await http.put(
-      Uri.parse('http://localhost:5000/parent/update/addchild'),
+      Uri.parse('http://10.1.128.246:5000/parent/update/addchild'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -201,19 +205,22 @@ class _ProfilePageState extends State<ProfilePage> {
               color: Colors.purple),
         ),
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          SizedBox(
-            width: parent_edit == false ? 160 : 120,
-            child: TextField(
-              controller: name,
-              enabled: parent_edit,
-              decoration: InputDecoration(
-                  labelText: parent_edit == false ? "Parent's Name:" : '',
-                  errorText:
-                      parent_err == true ? 'Please enter a valid name' : '',
-                  hintStyle: TextStyle(color: Colors.blue),
-                  hintText: "Enter your Name"),
-            ),
-          ),
+          loaded_ch == false
+              ? CircularProgressIndicator()
+              : SizedBox(
+                  width: parent_edit == false ? 160 : 120,
+                  child: TextField(
+                    controller: name,
+                    enabled: parent_edit,
+                    decoration: InputDecoration(
+                        labelText: parent_edit == false ? "Parent's Name:" : '',
+                        errorText: parent_err == true
+                            ? 'Please enter a valid name'
+                            : '',
+                        hintStyle: TextStyle(color: Colors.blue),
+                        hintText: "Enter your Name"),
+                  ),
+                ),
           parent_edit == false
               ? IconButton(
                   // To add an iconButton
@@ -241,21 +248,25 @@ class _ProfilePageState extends State<ProfilePage> {
                   icon: Icon(Icons.cancel_outlined))
         ]),
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          SizedBox(
-            width: number_edit == false ? 160 : 120,
-            child: TextField(
-              enabled: number_edit,
-              maxLength: 10,
-              controller: number,
-              decoration: InputDecoration(
-                  labelText:
-                      number_edit == false ? "Registered Mobile Number:" : '',
-                  errorText:
-                      number_err == true ? 'Enter a Valid Mobile Number' : '',
-                  hintStyle: TextStyle(color: Colors.blue),
-                  hintText: "Enter your Mobile Number"),
-            ),
-          ),
+          loaded_ch == false
+              ? CircularProgressIndicator()
+              : SizedBox(
+                  width: number_edit == false ? 160 : 120,
+                  child: TextField(
+                    enabled: number_edit,
+                    maxLength: 10,
+                    controller: number,
+                    decoration: InputDecoration(
+                        labelText: number_edit == false
+                            ? "Registered Mobile Number:"
+                            : '',
+                        errorText: number_err == true
+                            ? 'Enter a Valid Mobile Number'
+                            : '',
+                        hintStyle: TextStyle(color: Colors.blue),
+                        hintText: "Enter your Mobile Number"),
+                  ),
+                ),
           number_edit == false
               ? IconButton(
                   onPressed: () {
@@ -302,7 +313,8 @@ class _ProfilePageState extends State<ProfilePage> {
               showDialog(
                   context: context,
                   builder: (context) {
-                    return AddChildPage(addChild);  // add child fuction passed as an arguement
+                    return AddChildPage(
+                        addChild); // add child fuction passed as an arguement
                   });
             },
             child: Text('+ ADD A CHILD')),

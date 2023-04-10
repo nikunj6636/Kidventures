@@ -45,7 +45,7 @@ class _SignUpPage extends State<SignUpPage> {
     else if (password != confirmPassword) return 3;
 
     final response = await http.post(
-      Uri.parse('http://localhost:5000/parent/checkemail'),
+      Uri.parse('http://10.1.128.246:5000/parent/checkemail'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },

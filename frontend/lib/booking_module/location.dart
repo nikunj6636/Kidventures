@@ -79,7 +79,7 @@ class _LocationPageState extends State<LocationPage> {
   double longtitude = 0;
   Future<void> fetchCentres() async {
     final response = await http.post(
-      Uri.parse('http://localhost:5000/location/nearest'),
+      Uri.parse('http://10.1.128.246:5000/location/nearest'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -92,7 +92,7 @@ class _LocationPageState extends State<LocationPage> {
     if (response.statusCode == 200) {
       final array =
           jsonDecode(response.body); // array of children(json objects)
-      
+
       print(array);
     }
   }
