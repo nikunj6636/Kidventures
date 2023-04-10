@@ -86,9 +86,7 @@ class _AddChildPageState extends State<AddChildPage> {
                   childGender.length == 0) {
                 return;
               }
-
               widget.addChild(childName.text, DateOfBirth.text, childGender);
-
               Navigator.pop(context);
             },
             child: Text('ADD CHILD')),

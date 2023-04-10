@@ -2,10 +2,10 @@ const express = require('express')
 const router = express.Router() 
 
 const Parent  = require('../Models/parent')
+const Child  = require('../Models/child')
 
 const bcrypt =  require('bcrypt') 
 const nodemailer = require('nodemailer');
-const { request, response } = require('express');
 
 router.post('/checkemail',async (request,response)=>{
   const userExists = await Parent.findOne({email: request.body.email}); // conition here
@@ -98,6 +98,31 @@ router.post("/profile", async (request, response) => { // get the profile of the
   }
 });
 
+// return the array of children corresponding to parent
+
+router.post('/children', async (request,response)=>{
+
+  await Parent.findOne({email: request.body.email})
+  .then(res => {
+    const array = res.children;
+    let output = []
+
+    const fun = async ()=> {
+      for(let i = 0 ; i < array.length ; i++)
+      {
+        let id = array[i] 
+        const child = await Child.findById(id); 
+        output.push(child) 
+      }
+    }
+
+    fun().then(()=>{
+      response.status(200).send(output) 
+    }).catch((err)=>{
+      response.status(400).send(err) 
+    })
+  })
+})
 
 router.put("/update/profile", async (request, response) => { // get the profile of the user
   const user = await Parent.updateOne({email: request.body.email}, {$set: request.body});
@@ -107,5 +132,37 @@ router.put("/update/profile", async (request, response) => { // get the profile 
     response.status(400).send(error);
   }
 });
+
+router.put('/update/addchild', async (request,response) =>{
+  const parent = request.body.parent 
+  
+  const name = request.body.name 
+  const DOB = request.body.DOB 
+  const gender = request.body.gender 
+
+  const family = await Parent.findOne({email : parent}) 
+
+  const child = new Child({
+    name : name,
+    date_of_birth : DOB,
+    gender : gender,
+  })
+
+  child.save().then((res)=>{
+  
+    family.children.push(res._id);
+
+    family.save().then(()=>{
+
+      response.status(200).send('OK')
+      
+    }).catch((err)=>{
+      response.status(400).send(err)
+    })
+  }).catch((err)=>{
+    
+    response.status(401).send(err) 
+  })
+})
 
 module.exports = router 

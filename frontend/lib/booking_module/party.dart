@@ -176,7 +176,7 @@ class _MyPartyModule extends State<MyPartyModule> {
       Center(
         child: Container(
           // Party Booking Time
-          width: 200,
+          width: 250,
           child: Column(
             children: [
               TextField(
@@ -206,31 +206,51 @@ class _MyPartyModule extends State<MyPartyModule> {
                   }
                 },
               ),
+              Text(''),
               Row(
-                children: [
-                  Text('Duration: ',
-                      style: TextStyle(
-                        fontSize: 20,
-                      )),
-                  DropdownButton(
-                      icon: Icon(Icons.keyboard_arrow_down),
-                      style: TextStyle(
-                        color: Colors.black,
-                      ),
-                      value: duration.toString(),
-                      items: time_available.map((e) {
-                        return DropdownMenuItem(
-                            value: e.toString(),
-                            child: Text(e.toString() + ' hours'));
-                      }).toList(),
-                      onChanged: (value) {
-                        // parameter is the new_value here
-                        setState(() {
-                          duration = value.toString();
-                        });
-                      }),
-                ],
-              ),
+              children: [
+                Text('Select Duration: ',
+                    style: TextStyle(
+                      fontSize: 20,
+                    )),
+                DropdownButton(
+                    icon: Icon(Icons.keyboard_arrow_down),
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.black,
+                    ),
+                    value: duration.toString(),
+                    items: time_available.map((e) {
+                      return DropdownMenuItem(
+                          value: e.toString(),
+                          child: Text(
+                              e.toString() + (e > 1 ? ' hours' : ' hour')));
+                    }).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        duration = value.toString();
+                      });
+                    }),
+              ],
+            ),
+            Text(''),
+      ElevatedButton(
+      onPressed: (){
+
+      },
+      child: Text(
+        'Find Centres Nearby',
+      style: TextStyle(
+        fontSize: 20,
+        fontFamily: AutofillHints.name,
+        color: Colors.white,
+        ),
+        ),
+      
+      style: ButtonStyle(
+          backgroundColor: MaterialStatePropertyAll<Color>(Colors.green),
+          mouseCursor:  MaterialStatePropertyAll<MouseCursor>(MouseCursor.defer),
+        ),),
             ],
           ),
         ),

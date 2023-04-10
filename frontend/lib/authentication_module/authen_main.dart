@@ -3,7 +3,6 @@ import 'package:App/authentication_module/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:flat_3d_button/flat_3d_button.dart';
 
-
 class AuthenticationPage extends StatefulWidget {
   AuthenticationPage({Key? key}) : super(key: key);
 

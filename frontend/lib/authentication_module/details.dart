@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:App/main.dart';
 import 'package:http/http.dart' as http;
 
 import 'dart:convert';
 
+import 'package:App/routes.dart';
+
 class DetailsPage extends StatefulWidget {
-  final String username;
+  final String email;
   final String password;
 
-  DetailsPage(this.username, this.password, {Key? key}) : super(key: key);
+  DetailsPage(this.email, this.password, {Key? key}) : super(key: key);
 
   @override
   State<DetailsPage> createState() => _DetailsPage();
@@ -41,7 +42,7 @@ class _DetailsPage extends State<DetailsPage> {
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, dynamic>{
-          'email': widget.username,
+          'email': widget.email,
           'password': widget.password,
           'name': name,
           'mobile_no': int.parse(phone),
@@ -112,8 +113,8 @@ class _DetailsPage extends State<DetailsPage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => MyApp(
-                                          widget.username,
+                                    builder: (context) => MainPage(
+                                          widget.email,
                                         )));
                           } else {
                             showDialog(

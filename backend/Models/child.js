@@ -21,7 +21,6 @@ const ChildSchema = mongoose.Schema({
         type: String, 
         required: true,
     }
-
 })
 
 

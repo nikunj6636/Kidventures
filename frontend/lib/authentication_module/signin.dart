@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:App/main.dart';
+import 'package:App/routes.dart';
 import 'package:http/http.dart' as http;
 
 import 'dart:convert';
@@ -12,7 +12,7 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPage extends State<SignInPage> {
-  TextEditingController username = TextEditingController();
+  TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
 
   int authenticated = 5; // is returned when user is authenticated
@@ -33,12 +33,12 @@ class _SignInPage extends State<SignInPage> {
         .hasMatch(email);
   }
 
-  Future<int> validateSignIn(String username, String password) async {
-    if (username.length == 0)
+  Future<int> validateSignIn(String email, String password) async {
+    if (email.length == 0)
       return 0;
     else if (password.length == 0)
       return 1;
-    else if (!validateEmail(username))
+    else if (!validateEmail(email))
       return 2;
     else {
       final response = await http.post(
@@ -47,7 +47,7 @@ class _SignInPage extends State<SignInPage> {
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String>{
-          'email': username,
+          'email': email,
           'password': password,
         }),
       );
@@ -74,7 +74,7 @@ class _SignInPage extends State<SignInPage> {
             Container(
                 width: 200,
                 child: TextField(
-                  controller: username,
+                  controller: email,
                   decoration: InputDecoration(
                     labelText: 'Email ID',
                     labelStyle: TextStyle(color: Colors.purple),
@@ -111,15 +111,13 @@ class _SignInPage extends State<SignInPage> {
             ElevatedButton(
               onPressed: agree
                   ? () {
-                      validateSignIn(username.text, password.text)
-                          .then((value) {
+                      validateSignIn(email.text, password.text).then((value) {
                         if (value == authenticated) {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => MyApp(
-                                        // change the parameters here
-                                        username.text,
+                                  builder: (context) => MainPage(
+                                        email.text, // email here
                                       )));
                         } else {
                           showDialog(

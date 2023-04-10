@@ -37,7 +37,7 @@ class _OTPPage extends State<OTPPage> {
     if (response.statusCode == 200) {
       OTP = jsonDecode(response.body)["OTP"];
     } else {
-      throw Exception("OTP not sent again");
+      throw Exception("OTP not sent");
     }
   }
 

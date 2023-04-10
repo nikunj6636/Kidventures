@@ -1,62 +1,85 @@
+import 'package:App/booking_module/select_center.dart';
 import 'package:flutter/material.dart';
-import 'package:App/main.dart';
-import 'package:intl/intl.dart';
-import 'package:flat_3d_button/flat_3d_button.dart';
-import 'package:flutter_timer_countdown/flutter_timer_countdown.dart';
 import 'package:multiselect/multiselect.dart';
+
+import 'package:App/profile/profile.dart' show Child;
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class MyActivityModule extends StatefulWidget {
   final String email;
-  final List<String> Name;
-  final List<String> Age;
-  final List<String> Gender;
-  MyActivityModule(this.Name, this.Age, this.Gender, this.email, {Key? key})
-      : super(key: key);
+
+  MyActivityModule(this.email, {Key? key}) : super(key: key);
 
   @override
   State<MyActivityModule> createState() => _MyActivityModule();
 }
 
 class _MyActivityModule extends State<MyActivityModule> {
-  // Initialized variables
-
-  // String
-  String email = '';
-
   // List of children
-  List<String> Name = [];
-  List<String> Age = [];
-  List<String> Gender = [];
+  List<Child> children = [];
 
-  // List of selected children
+  // Name of the selected children
   List<String> selected = [];
 
-  // For the Activity Booking Part
   TextEditingController drop_time_activity = TextEditingController();
 
-  List<int> time_available = [];
-  int max_available = 5;
-  TextEditingController duration_activity = TextEditingController();
-  String? duration = '1';
+  static List<int> time_available = [
+    1,
+    2,
+    3,
+    4,
+    5
+  ]; // available duration of activity
+  int duration = 1; // make sure it is an element of list
 
-  // For the Party Booking Part
-  TextEditingController start_time_party = TextEditingController();
+  // List of activities
+  List<String> activities = [
+    'Origami',
+    'Painting',
+    'Story telling',
+  ];
+
+  // object id of the chosen activities
+  List<String> chosen_activities = [];
+
+  // Boolean for testing
+  bool ch = false;
+
+  Future<void> fetchChild() async {
+    final response = await http.post(
+      Uri.parse('http://localhost:5000/parent/children'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'email': widget.email,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      final array =
+          jsonDecode(response.body); // array of children(json objects)
+
+      setState(() {
+        for (int i = 0; i < array.length; i++) {
+          final elem = array[i];
+          final child = new Child(
+              name: elem["name"],
+              DOB: elem["date_of_birth"],
+              gender: elem["gender"]);
+          children.add(child);
+        }
+
+        ch = true;
+      });
+    }
+  }
 
   @override
   void initState() {
-    // init the state
-    email = widget.email;
-    Name = widget.Name;
-    Age = widget.Age;
-    Gender = widget.Gender;
-
-    // Available time
-    for (int i = 1; i <= 5; i++) {
-      time_available.add(i);
-    }
-
-    print("Activity Booking");
-    return;
+    super.initState();
+    fetchChild();
   }
 
   @override
@@ -70,24 +93,26 @@ class _MyActivityModule extends State<MyActivityModule> {
           )),
 
       // Select using multiselect
-
-      Container(
-        width: 200,
-        child: DropDownMultiSelect(
-            options: Name,
-            selectedValues: selected,
-            onChanged: (value) {
-              setState(() {
-                selected = value;
-                return;
-              });
-            }),
-      ),
+      ch == true
+          ? Container(
+              width: 250,
+              child: DropDownMultiSelect(
+                options: children.map((child) => child.name).toList(),
+                selectedValues: selected, // array of selected chuldren
+                onChanged: (value) {
+                  setState(() {
+                    selected = value;
+                  });
+                },
+                whenEmpty: 'Select children',
+              ),
+            )
+          : CircularProgressIndicator(),
 
       Text(''),
 
       Container(
-        width: 200,
+        width: 250,
         // Activity Booking
         child: Column(
           children: [
@@ -118,33 +143,79 @@ class _MyActivityModule extends State<MyActivityModule> {
                 }
               },
             ),
+            Text(''),
+
             Row(
               children: [
-                Text('Duration: ',
+                Text('Select Duration: ',
                     style: TextStyle(
                       fontSize: 20,
                     )),
                 DropdownButton(
                     icon: Icon(Icons.keyboard_arrow_down),
                     style: TextStyle(
-                      color: Colors.black,
+                      fontSize: 20,
+                      color: Colors.deepPurple,
                     ),
                     value: duration.toString(),
-                    items: time_available.map((e) {
+                    items: time_available.map((elem) {
                       return DropdownMenuItem(
-                          value: e.toString(),
-                          child: Text(e.toString() + ' hours'));
+                          value: elem.toString(),
+                          child: Text(elem.toString() +
+                              (elem > 1 ? ' hours' : ' hour')));
                     }).toList(),
                     onChanged: (value) {
                       setState(() {
-                        duration = value.toString();
+                        duration = int.parse(
+                            value ?? '1'); // to return a non nullable string
                       });
                     }),
               ],
             ),
           ],
         ),
-      )
+      ),
+
+      Text(''),
+      Text('Select Activities: ',
+          style: TextStyle(
+            fontFamily: AutofillHints.name,
+            fontSize: 20,
+            color: Colors.purple,
+          )),
+      Container(
+        width: 250,
+        child: DropDownMultiSelect(
+          options: activities,
+          selectedValues: chosen_activities,
+          onChanged: (value) {
+            setState(() {
+              chosen_activities = value;
+              return;
+            });
+          },
+          whenEmpty: 'Select required Activities',
+        ),
+      ),
+      Text(''),
+      ElevatedButton(
+        onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => SelectCenter()));
+        },
+        child: Text(
+          'Find Centres Nearby',
+          style: TextStyle(
+            fontSize: 20,
+            fontFamily: AutofillHints.name,
+            color: Colors.white,
+          ),
+        ),
+        style: ButtonStyle(
+          backgroundColor: MaterialStatePropertyAll<Color>(Colors.green),
+          mouseCursor: MaterialStatePropertyAll<MouseCursor>(MouseCursor.defer),
+        ),
+      ),
     ]);
   }
 }
