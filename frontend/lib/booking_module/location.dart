@@ -107,7 +107,7 @@ class _LocationPageState extends State<LocationPage> {
   bool fetched = false;
   Future<void> fetchCentres() async {
     final response = await http.post(
-      Uri.parse('http://10.1.128.246:5000/location/nearest'),
+      Uri.parse('http://192.168.122.1:5000/location/nearest'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -234,17 +234,14 @@ class _LocationPageState extends State<LocationPage> {
               ),
             )
           : Container(
-            alignment: Alignment.center,
-            child : 
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  CircularProgressIndicator(),
-                  Text('Please wait while we load a list of centers...'),
-                
-              
-            ])),
+              alignment: Alignment.center,
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    CircularProgressIndicator(),
+                    Text('Please wait while we load a list of centers...'),
+                  ])),
     );
   }
 }

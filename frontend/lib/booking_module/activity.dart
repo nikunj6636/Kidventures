@@ -1,9 +1,7 @@
-import 'package:App/booking_module/select_center.dart';
 import 'package:flutter/material.dart';
 import 'package:multiselect/multiselect.dart';
 
 import 'package:App/profile/profile.dart' show Child;
-import 'location.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -49,7 +47,7 @@ class _MyActivityModule extends State<MyActivityModule> {
 
   Future<void> fetchChild() async {
     final response = await http.post(
-      Uri.parse('http://10.1.128.246:5000/parent/children'),
+      Uri.parse('http://192.168.122.1:5000/parent/children'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -61,6 +59,8 @@ class _MyActivityModule extends State<MyActivityModule> {
     if (response.statusCode == 200) {
       final array =
           jsonDecode(response.body); // array of children(json objects)
+
+      if (!mounted) return;
 
       setState(() {
         for (int i = 0; i < array.length; i++) {
@@ -199,8 +199,6 @@ class _MyActivityModule extends State<MyActivityModule> {
         ),
       ),
       Text(''),
-
-  
     ]);
   }
 }

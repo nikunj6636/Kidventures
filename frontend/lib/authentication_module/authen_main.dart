@@ -14,6 +14,7 @@ class _AuthenticationPage extends State<AuthenticationPage> {
   // decide to signin / signup
 
   bool is_signin = true;
+  final PageController controller = PageController();
 
   @override
   Widget build(BuildContext context) {
@@ -24,13 +25,15 @@ class _AuthenticationPage extends State<AuthenticationPage> {
             appBar: AppBar(
               title: const Text('Authentication Page'),
             ),
-            body: SingleChildScrollView(
-                child: Center(
-                    child: Column(children: [
+            body:
+                // SingleChildScrollView(
+                // child:
+                Container(
+                    child: Center(
+                        child: Column(children: [
               SizedBox(
-                height: 10,
+                height: 40,
               ),
-
               Text(is_signin ? 'LOGIN PAGE' : 'SIGN UP PAGE',
                   style: TextStyle(
                     fontFamily: AutofillHints.name,
@@ -38,12 +41,22 @@ class _AuthenticationPage extends State<AuthenticationPage> {
                     fontSize: 40,
                     color: Colors.purple,
                   )),
-
-              // Buttons for toggling
-              ButtonBar(
-                mainAxisSize: MainAxisSize.min,
+              SizedBox(
+                height: 40,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Flat3dButton(
+                  ElevatedButton(
+                    style: ButtonStyle(
+                      minimumSize: MaterialStateProperty.all(Size(
+                        Theme.of(context).buttonTheme.minWidth * 1.5,
+                        Theme.of(context).buttonTheme.height,
+                      )),
+                      backgroundColor: is_signin == true
+                          ? MaterialStatePropertyAll<Color>(Color(0xFFD3D3D3))
+                          : MaterialStatePropertyAll<Color>(Colors.white),
+                    ),
                     onPressed: () {
                       setState(() {
                         is_signin = true;
@@ -53,13 +66,20 @@ class _AuthenticationPage extends State<AuthenticationPage> {
                       'Log In',
                       style: TextStyle(
                         color: Colors
-                            .white, // Replace with your desired font color
+                            .black, // Replace with your desired font color
                       ),
                     ),
-                    color:
-                        is_signin == true ? Colors.deepPurple : Colors.purple,
                   ),
-                  Flat3dButton(
+                  ElevatedButton(
+                    style: ButtonStyle(
+                      minimumSize: MaterialStateProperty.all(Size(
+                        Theme.of(context).buttonTheme.minWidth * 1.5,
+                        Theme.of(context).buttonTheme.height,
+                      )), // Set the height of the button from the theme
+                      backgroundColor: is_signin == false
+                          ? MaterialStatePropertyAll<Color>(Color(0xFFD3D3D3))
+                          : MaterialStatePropertyAll<Color>(Colors.white),
+                    ),
                     onPressed: () {
                       setState(() {
                         is_signin = false;
@@ -69,15 +89,36 @@ class _AuthenticationPage extends State<AuthenticationPage> {
                       'Sign Up',
                       style: TextStyle(
                         color: Colors
-                            .white, // Replace with your desired font color
+                            .black, // Replace with your desired font color
                       ),
                     ),
-                    color:
-                        is_signin == false ? Colors.deepPurple : Colors.purple,
                   )
                 ],
               ),
-              is_signin ? SignInPage() : SignUpPage(),
-            ])))));
+              Expanded(
+                  child: PageView(
+                controller: controller,
+                onPageChanged: (value) {
+                  setState(() {
+                    if (value == 0) {
+                      is_signin = true;
+                    } else {
+                      is_signin = false;
+                    }
+                  });
+                  print(value);
+                },
+                children: <Widget>[
+                  SignInPage(),
+                  SignUpPage(),
+                ],
+              )),
+
+              // Buttons for toggling
+              // ButtonBar(
+              //   mainAxisSize: MainAxisSize.min,
+            ]))
+                    // )
+                    )));
   }
 }

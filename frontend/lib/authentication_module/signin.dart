@@ -42,7 +42,7 @@ class _SignInPage extends State<SignInPage> {
       return 2;
     else {
       final response = await http.post(
-        Uri.parse('http://10.1.128.246:5000/parent/signin'),
+        Uri.parse('http://192.168.122.1:5000/parent/signin'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },

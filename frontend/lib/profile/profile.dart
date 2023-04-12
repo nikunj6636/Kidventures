@@ -51,7 +51,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<void> updateProfile() async {
     final response = await http.put(
-      Uri.parse('http://10.1.128.246:5000/parent/update/profile'),
+      Uri.parse('http://192.168.122.1:5000/parent/update/profile'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -111,7 +111,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<void> fetchProfile() async {
     final response = await http.post(
-      Uri.parse('http://10.1.128.246:5000/parent/profile'),
+      Uri.parse('http://192.168.122.1:5000/parent/profile'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -129,7 +129,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
       // children
       final childresponse = await http.post(
-        Uri.parse('http://10.1.128.246:5000/parent/children'),
+        Uri.parse('http://192.168.122.1:5000/parent/children'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -139,6 +139,8 @@ class _ProfilePageState extends State<ProfilePage> {
       );
 
       if (childresponse.statusCode == 200) {
+        if (!mounted) return;
+
         setState(() {
           final array = jsonDecode(childresponse.body);
 
@@ -161,7 +163,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<void> addChild(String name, String DOB, String gender) async {
     final response = await http.put(
-      Uri.parse('http://10.1.128.246:5000/parent/update/addchild'),
+      Uri.parse('http://192.168.122.1:5000/parent/update/addchild'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -332,7 +334,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       content: Column(
                         children: [
                           Text('Name: ' + name),
-                          Text('DOB : ' + dateOfBirth.substring(0,10)),
+                          Text('DOB : ' + dateOfBirth.substring(0, 10)),
                           Text('Gender: ' + gender),
                         ],
                       ));
