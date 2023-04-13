@@ -1,10 +1,11 @@
+import 'package:App/authentication_module/otp.dart';
 import 'package:App/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class SignInPage extends StatelessWidget {
-  const SignInPage({Key? key}) : super(key: key);
+class SignInPage2 extends StatelessWidget {
+  const SignInPage2({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +46,7 @@ class _Logo extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        FlutterLogo(size: isSmallScreen ? 100 : 200),
+        FlutterLogo(size: isSmallScreen ? 50: 100),
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Text(
@@ -77,30 +78,31 @@ class __FormContentState extends State<_FormContent> {
 
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
+  TextEditingController confirm_password = TextEditingController();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   // Now the action that button performs
   Future<int> LoginHandler() async {
     final response = await http.post(
-      Uri.parse('http://10.1.128.246:5000/parent/signin'),
+      Uri.parse('http://10.1.128.246:5000/parent/checkemail'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, String>{
         'email': email.text,
-        'password': password.text,
       }),
     );
 
     if (response.statusCode == 200) {
+      // email and password created, redirect to OTP page
       return 1;
-    } else if (response.statusCode == 403) {
-      // invalid credentials
+    } else if (response.statusCode == 400) {
+      // email already exists
       return 0;
     } else {
-      // error connecting with database
-      throw Exception('Failed to connect to server');
+      // error connecting to database
+      throw Exception("Database connection failed");
     }
   }
 
@@ -169,6 +171,40 @@ class __FormContentState extends State<_FormContent> {
               controller: password,
             ),
             _gap(),
+            TextFormField(
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Password field cannot be empty';
+                }
+
+                if (password.text != confirm_password.text) {
+                  return 'Passwords does not match';
+                }
+
+                // if (value.length < 8) {
+                //   return 'Password must be at least 8 characters';
+                // }
+                return null;
+              },
+              obscureText: !_isPasswordVisible,
+              decoration: InputDecoration(
+                  labelText: 'Confirm Password',
+                  hintText: 'Confirm your password',
+                  prefixIcon: const Icon(Icons.lock_outline_rounded),
+                  border: const OutlineInputBorder(),
+                  suffixIcon: IconButton(
+                    icon: Icon(_isPasswordVisible
+                        ? Icons.visibility_off
+                        : Icons.visibility),
+                    onPressed: () {
+                      setState(() {
+                        _isPasswordVisible = !_isPasswordVisible;
+                      });
+                    },
+                  )),
+              controller: confirm_password,
+            ),
+            // _gap(),
             CheckboxListTile(
               value: _rememberMe,
               onChanged: (value) {
@@ -200,31 +236,37 @@ class __FormContentState extends State<_FormContent> {
                 ),
                 onPressed: () {
                   if (_formKey.currentState?.validate() ?? false) {
-                    LoginHandler().then((value){
-                      if(value == 1){
+                    LoginHandler().then((value) {
+                      if (value == 1) {
+                        // redirect to the OTP page
                         Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => MainPage(
-                                        email.text, // email here
-                                      )));
-                      }
-                      else{
-                        showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                  title: Text('Error During Sign In'),
-                                  content: Text('Invalid Credentials Try Again'),
-                                  actions: [
-                                    OutlinedButton(
-                                        child: Text('OK'),
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        })
-                                  ],
-                                );
-                              });
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    OTPPage(email.text, password.text)));
+                        return;
+                      } else {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    MainPage(email.text)));
+                        // showDialog(
+                        //     context: context,
+                        //     builder: (context) {
+                        //       return AlertDialog(
+                        //         title: Text('Error During Sign Up'),
+                        //         content: Text('Email Already Exists'),
+                        //         actions: [
+                        //           OutlinedButton(
+                        //               child: Text('OK'),
+                        //               onPressed: () {
+                        //                 Navigator.of(context).pop();
+                        //               })
+                        //         ],
+                        //       );
+                        //     });
+                        return;
                       }
                     });
 

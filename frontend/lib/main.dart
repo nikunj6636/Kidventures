@@ -1,4 +1,6 @@
 import 'package:App/authentication_module/authen_main.dart';
+import 'package:App/authentication_module/login_page.dart';
+import 'package:App/authentication_module/otp.dart';
 import 'package:App/booking_module/booking.dart';
 import 'package:flutter/material.dart';
 import 'package:App/booking_module/location.dart';
@@ -26,7 +28,8 @@ class MyApp extends StatelessWidget {
             seedColor: Colors.blue), // Colors.fromRGB(0,0,255)
       ),
       home:
-          AuthenticationPage(), // start with authentication module and navigate to MainPage
+          // AuthenticationPage(),
+          HomePage('amanrajmathematics@gmail.com',''), // start with authentication module and navigate to MainPage
     );
   }
 }

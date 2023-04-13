@@ -22,28 +22,14 @@ class _AuthenticationPage extends State<AuthenticationPage> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
             resizeToAvoidBottomInset: false,
-            appBar: AppBar(
-              title: const Text('Authentication Page'),
-            ),
+            
             body:
                 // SingleChildScrollView(
                 // child:
                 Container(
                     child: Center(
                         child: Column(children: [
-              SizedBox(
-                height: 40,
-              ),
-              Text(is_signin ? 'LOGIN PAGE' : 'SIGN UP PAGE',
-                  style: TextStyle(
-                    fontFamily: AutofillHints.name,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 40,
-                    color: Colors.purple,
-                  )),
-              SizedBox(
-                height: 40,
-              ),
+          
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -109,8 +95,11 @@ class _AuthenticationPage extends State<AuthenticationPage> {
                   print(value);
                 },
                 children: <Widget>[
+                  // SignInPage(),
+                  // SignUpPage(),
                   SignInPage(),
                   SignUpPage(),
+
                 ],
               )),
 
