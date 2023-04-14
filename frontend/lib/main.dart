@@ -1,19 +1,16 @@
 import 'package:App/authentication_module/authen_main.dart';
-import 'package:App/authentication_module/otp.dart';
-import 'package:App/booking_module/booking.dart';
-import 'package:App/profile/profile.dart';
 import 'package:flutter/material.dart';
-import 'package:App/booking_module/location.dart';
 import 'package:flutter/services.dart';
 
+import 'test.dart';
+
 void main() {
-  runApp(MyApp());
+  runApp(App());
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive, overlays: [
     SystemUiOverlay.bottom,
     SystemUiOverlay.top,
   ]);
 }
-
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -28,7 +25,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(
             seedColor: Colors.blue), // Colors.fromRGB(0,0,255)
       ),
-      home: AuthenticationPage(), // start with authentication module and navigate to MainPage
+      home:
+          AuthenticationPage(), // start with authentication module and navigate to MainPage
     );
   }
 }
