@@ -37,7 +37,7 @@ class _DetailsPage extends State<DetailsPage> {
       return 2;
     else {
       final response = await http.post(
-        Uri.parse('http://10.1.128.246:5000/parent/signup'),
+        Uri.parse('http://10.42.0.118:5000/parent/signup'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },

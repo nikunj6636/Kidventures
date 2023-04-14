@@ -10,28 +10,37 @@ class SignInPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final bool isSmallScreen = MediaQuery.of(context).size.width < 600;
 
+    // print(isSmallScreen);
+
     return Scaffold(
-        body: Center(
-            child: isSmallScreen
-                ? Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: const [
-                      _Logo(),
-                      _FormContent(),
-                    ],
-                  )
-                : Container(
-                    padding: const EdgeInsets.all(32.0),
-                    constraints: const BoxConstraints(maxWidth: 800),
-                    child: Row(
-                      children: const [
-                        Expanded(child: _Logo()),
-                        Expanded(
-                          child: Center(child: _FormContent()),
-                        ),
-                      ],
+        body: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        isSmallScreen
+            ? Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: const [
+                  _Logo(),
+                  _FormContent(),
+                ],
+              )
+            : Container(
+                padding: const EdgeInsets.all(32.0),
+                constraints: const BoxConstraints(maxWidth: 800),
+                child: Row(
+                  children: const [
+                    Expanded(child: _Logo()),
+                    Expanded(
+                      child: Center(child: _FormContent()),
                     ),
-                  )));
+                  ],
+                ),
+              ),
+      ],
+    )
+        // )
+        );
   }
 }
 
@@ -45,11 +54,11 @@ class _Logo extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        FlutterLogo(size: isSmallScreen ? 100 : 200),
+        FlutterLogo(size: isSmallScreen ? 50 : 100),
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Text(
-            "Welcome to Flutter!",
+            "Welcome, Please Sign In!",
             textAlign: TextAlign.center,
             style: isSmallScreen
                 ? Theme.of(context).textTheme.headline5
@@ -83,7 +92,7 @@ class __FormContentState extends State<_FormContent> {
   // Now the action that button performs
   Future<int> LoginHandler() async {
     final response = await http.post(
-      Uri.parse('http://10.1.128.246:5000/parent/signin'),
+      Uri.parse('http://10.42.0.118:5000/parent/signin'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -200,31 +209,30 @@ class __FormContentState extends State<_FormContent> {
                 ),
                 onPressed: () {
                   if (_formKey.currentState?.validate() ?? false) {
-                    LoginHandler().then((value){
-                      if(value == 1){
+                    LoginHandler().then((value) {
+                      if (value == 1) {
                         Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => MainPage(
-                                        email.text, // email here
-                                      )));
-                      }
-                      else{
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MainPage(
+                                      email.text, // email here
+                                    )));
+                      } else {
                         showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                  title: Text('Error During Sign In'),
-                                  content: Text('Invalid Credentials Try Again'),
-                                  actions: [
-                                    OutlinedButton(
-                                        child: Text('OK'),
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        })
-                                  ],
-                                );
-                              });
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: Text('Error During Sign In'),
+                                content: Text('Invalid Credentials Try Again'),
+                                actions: [
+                                  OutlinedButton(
+                                      child: Text('OK'),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      })
+                                ],
+                              );
+                            });
                       }
                     });
 

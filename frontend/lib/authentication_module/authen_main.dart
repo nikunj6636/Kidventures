@@ -13,7 +13,7 @@ class AuthenticationPage extends StatefulWidget {
 class _AuthenticationPage extends State<AuthenticationPage> {
   // decide to signin / signup
 
-  bool is_signin = true;
+  bool isSignIn = true;
   final PageController controller = PageController();
 
   @override
@@ -22,14 +22,10 @@ class _AuthenticationPage extends State<AuthenticationPage> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
             resizeToAvoidBottomInset: false,
-            
             body:
-                // SingleChildScrollView(
-                // child:
                 Container(
                     child: Center(
                         child: Column(children: [
-          
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -39,13 +35,13 @@ class _AuthenticationPage extends State<AuthenticationPage> {
                         Theme.of(context).buttonTheme.minWidth * 1.5,
                         Theme.of(context).buttonTheme.height,
                       )),
-                      backgroundColor: is_signin == true
+                      backgroundColor: isSignIn == true
                           ? MaterialStatePropertyAll<Color>(Color(0xFFD3D3D3))
                           : MaterialStatePropertyAll<Color>(Colors.white),
                     ),
                     onPressed: () {
                       setState(() {
-                        is_signin = true;
+                        isSignIn = true;
                       });
                     },
                     child: Text(
@@ -62,13 +58,13 @@ class _AuthenticationPage extends State<AuthenticationPage> {
                         Theme.of(context).buttonTheme.minWidth * 1.5,
                         Theme.of(context).buttonTheme.height,
                       )), // Set the height of the button from the theme
-                      backgroundColor: is_signin == false
+                      backgroundColor: isSignIn == false
                           ? MaterialStatePropertyAll<Color>(Color(0xFFD3D3D3))
                           : MaterialStatePropertyAll<Color>(Colors.white),
                     ),
                     onPressed: () {
                       setState(() {
-                        is_signin = false;
+                        isSignIn = false;
                       });
                     },
                     child: Text(
@@ -81,27 +77,27 @@ class _AuthenticationPage extends State<AuthenticationPage> {
                   )
                 ],
               ),
-              Expanded(
+              Flexible(
+                  fit: FlexFit.loose,
                   child: PageView(
-                controller: controller,
-                onPageChanged: (value) {
-                  setState(() {
-                    if (value == 0) {
-                      is_signin = true;
-                    } else {
-                      is_signin = false;
-                    }
-                  });
-                  print(value);
-                },
-                children: <Widget>[
-                  // SignInPage(),
-                  // SignUpPage(),
-                  SignInPage(),
-                  SignUpPage(),
-
-                ],
-              )),
+                    controller: controller,
+                    onPageChanged: (value) {
+                      setState(() {
+                        if (value == 1) {
+                          isSignIn = true;
+                        } else {
+                          isSignIn = false;
+                        }
+                      });
+                      print(value);
+                    },
+                    children: <Widget>[
+                      // SignInPage(),
+                      // SignUpPage(),
+                      SignInPage(),
+                      SignUpPage(),
+                    ],
+                  )),
 
               // Buttons for toggling
               // ButtonBar(

@@ -12,27 +12,31 @@ class SignUpPage extends StatelessWidget {
     final bool isSmallScreen = MediaQuery.of(context).size.width < 600;
 
     return Scaffold(
-        body: Center(
-            child: isSmallScreen
-                ? Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: const [
-                      _Logo(),
-                      _FormContent(),
-                    ],
-                  )
-                : Container(
-                    padding: const EdgeInsets.all(32.0),
-                    constraints: const BoxConstraints(maxWidth: 800),
-                    child: Row(
-                      children: const [
-                        Expanded(child: _Logo()),
-                        Expanded(
-                          child: Center(child: _FormContent()),
-                        ),
-                      ],
+        body: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        isSmallScreen
+            ? Column(
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  _Logo(),
+                  _FormContent(),
+                ],
+              )
+            : Container(
+                padding: const EdgeInsets.all(32.0),
+                constraints: const BoxConstraints(maxWidth: 800),
+                child: Row(
+                  children: const [
+                    Expanded(child: _Logo()),
+                    Expanded(
+                      child: Center(child: _FormContent()),
                     ),
-                  )));
+                  ],
+                ),
+              ),
+      ],
+    ));
   }
 }
 
@@ -46,11 +50,11 @@ class _Logo extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        FlutterLogo(size: isSmallScreen ? 50: 100),
+        FlutterLogo(size: isSmallScreen ? 50 : 100),
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Text(
-            "Welcome to Flutter!",
+            "Welcome, Create An Account !",
             textAlign: TextAlign.center,
             style: isSmallScreen
                 ? Theme.of(context).textTheme.headline5
@@ -85,7 +89,7 @@ class __FormContentState extends State<_FormContent> {
   // Now the action that button performs
   Future<int> LoginHandler() async {
     final response = await http.post(
-      Uri.parse('http://10.1.128.246:5000/parent/checkemail'),
+      Uri.parse('http://10.42.0.118:5000/parent/checkemail'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -243,7 +247,7 @@ class __FormContentState extends State<_FormContent> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    OTPPage(email.text, password.text)));
+                                    HomePage(email.text, password.text)));
                         return;
                       } else {
                         showDialog(

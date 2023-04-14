@@ -1,3 +1,4 @@
+import 'package:App/authentication_module/authen_main.dart';
 import 'package:flutter/material.dart';
 import 'package:App/booking_module/booking.dart';
 import 'package:App/profile/profile.dart';
@@ -34,6 +35,25 @@ class _MainPageState extends State<MainPage> {
             resizeToAvoidBottomInset: false,
             appBar: AppBar(
               title: Text((_selectedIndex == 0) ? 'Profile Page' : 'Booking'),
+              actions:
+              _selectedIndex == 0 ? 
+              <Widget>[ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => AuthenticationPage()));
+            },
+            // child: Text('Log Out'),
+            child : const Icon(Icons.logout),
+            style: const ButtonStyle(
+              
+              backgroundColor: MaterialStatePropertyAll<Color>(Colors.transparent),
+            )),
+            ]
+            :
+            []
+            ,
             ),
             body: SingleChildScrollView(
               child: Center(child: page),
