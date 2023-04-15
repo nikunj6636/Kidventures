@@ -433,7 +433,11 @@ class _ProfilePageState1 extends State<ProfilePage1> {
 
   Future<void> updateProfile() async {
     final response = await http.put(
+<<<<<<< HEAD
       Uri.parse('http://10.1.128.246:5000/parent/update/profile'),
+=======
+      Uri.parse('http://192.168.122.1:5000/parent/update/profile'),
+>>>>>>> 3a419d8300b56d668f6c57f66fb9d393eab69542
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -493,7 +497,11 @@ class _ProfilePageState1 extends State<ProfilePage1> {
 
   Future<void> fetchProfile() async {
     final response = await http.post(
+<<<<<<< HEAD
       Uri.parse('http://10.1.128.246:5000/parent/profile'),
+=======
+      Uri.parse('http://192.168.122.1:5000/parent/profile'),
+>>>>>>> 3a419d8300b56d668f6c57f66fb9d393eab69542
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -511,7 +519,11 @@ class _ProfilePageState1 extends State<ProfilePage1> {
 
       // children
       final childresponse = await http.post(
+<<<<<<< HEAD
         Uri.parse('http://10.1.128.246:5000/parent/children'),
+=======
+        Uri.parse('http://192.168.122.1:5000/parent/children'),
+>>>>>>> 3a419d8300b56d668f6c57f66fb9d393eab69542
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -545,7 +557,11 @@ class _ProfilePageState1 extends State<ProfilePage1> {
 
   Future<void> addChild(String name, String DOB, String gender) async {
     final response = await http.put(
+<<<<<<< HEAD
       Uri.parse('http://10.1.128.246:5000/parent/update/addchild'),
+=======
+      Uri.parse('http://192.168.122.1:5000/parent/update/addchild'),
+>>>>>>> 3a419d8300b56d668f6c57f66fb9d393eab69542
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },

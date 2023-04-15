@@ -89,7 +89,11 @@ class __FormContentState extends State<_FormContent> {
   // Now the action that button performs
   Future<int> LoginHandler() async {
     final response = await http.post(
+<<<<<<< HEAD
       Uri.parse('http://10.1.128.246:5000/parent/checkemail'),
+=======
+      Uri.parse('http://192.168.122.1:5000/parent/checkemail'),
+>>>>>>> 3a419d8300b56d668f6c57f66fb9d393eab69542
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flat_3d_button/flat_3d_button.dart';
 import 'location.dart';
-import 'activity.dart';
 import 'party.dart';
+import 'activity.dart';
 
 class MyBookingModule extends StatefulWidget {
   final String email;
