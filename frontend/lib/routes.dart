@@ -19,7 +19,10 @@ class _MainPageState extends State<MainPage> {
     Widget page;
     switch (_selectedIndex) {
       case 0:
-        page = ProfilePage(widget.email);
+        // page = ProfilePage(widget.email);
+        // page = ProfilePage1();
+        page = AuthenticationPage();
+
         break;
       case 1:
         page = MyBookingModule(widget.email);
@@ -35,25 +38,24 @@ class _MainPageState extends State<MainPage> {
             resizeToAvoidBottomInset: false,
             appBar: AppBar(
               title: Text((_selectedIndex == 0) ? 'Profile Page' : 'Booking'),
-              actions:
-              _selectedIndex == 0 ? 
-              <Widget>[ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => AuthenticationPage()));
-            },
-            // child: Text('Log Out'),
-            child : const Icon(Icons.logout),
-            style: const ButtonStyle(
-              
-              backgroundColor: MaterialStatePropertyAll<Color>(Colors.transparent),
-            )),
-            ]
-            :
-            []
-            ,
+              actions: _selectedIndex == 0
+                  ? <Widget>[
+                      ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        AuthenticationPage()));
+                          },
+                          // child: Text('Log Out'),
+                          child: const Icon(Icons.logout),
+                          style: const ButtonStyle(
+                            backgroundColor: MaterialStatePropertyAll<Color>(
+                                Colors.transparent),
+                          )),
+                    ]
+                  : [],
             ),
             body: SingleChildScrollView(
               child: Center(child: page),

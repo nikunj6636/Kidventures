@@ -107,7 +107,7 @@ class _LocationPageState extends State<LocationPage> {
   bool fetched = false;
   Future<void> fetchCentres() async {
     final response = await http.post(
-      Uri.parse('http://10.42.0.118:5000/location/nearest'),
+      Uri.parse('http://10.1.128.246:5000/location/nearest'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },

@@ -12,7 +12,6 @@ class AuthenticationPage extends StatefulWidget {
 
 class _AuthenticationPage extends State<AuthenticationPage> {
   // decide to signin / signup
-
   bool isSignIn = true;
   final PageController controller = PageController();
 
@@ -21,6 +20,7 @@ class _AuthenticationPage extends State<AuthenticationPage> {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Scaffold(
+          
             resizeToAvoidBottomInset: false,
             body:
                 Container(

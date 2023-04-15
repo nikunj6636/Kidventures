@@ -1,3 +1,4 @@
+import 'package:App/profile/profile.dart';
 import 'package:App/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -92,7 +93,7 @@ class __FormContentState extends State<_FormContent> {
   // Now the action that button performs
   Future<int> LoginHandler() async {
     final response = await http.post(
-      Uri.parse('http://10.42.0.118:5000/parent/signin'),
+      Uri.parse('http://10.1.128.246:5000/parent/signin'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -214,9 +215,10 @@ class __FormContentState extends State<_FormContent> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => MainPage(
-                                      email.text, // email here
-                                    )));
+                                builder: (context) => 
+                                // MainPage(email.text,)
+                                ProfilePage1(email.text,)
+                                ));
                       } else {
                         showDialog(
                             context: context,

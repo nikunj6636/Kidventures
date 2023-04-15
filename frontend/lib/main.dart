@@ -5,6 +5,7 @@ import 'package:App/profile/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:App/booking_module/location.dart';
 import 'package:flutter/services.dart';
+import 'test.dart';
 
 void main() {
   runApp(MyApp());
@@ -13,7 +14,6 @@ void main() {
     SystemUiOverlay.top,
   ]);
 }
-
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -28,7 +28,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(
             seedColor: Colors.blue), // Colors.fromRGB(0,0,255)
       ),
-      home: AuthenticationPage(), // start with authentication module and navigate to MainPage
+      home:
+          AuthenticationPage(), // start with authentication module and navigate to MainPage
     );
   }
 }
