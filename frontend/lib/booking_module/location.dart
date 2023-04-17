@@ -14,7 +14,7 @@ class LocationPage extends StatefulWidget {
 class _LocationPageState extends State<LocationPage> {
   String? _currentAddress;
   Position? _currentPosition;
-  bool is_pos = false;
+  bool isPos = false;
 
   Future<bool> _handleLocationPermission() async {
     bool serviceEnabled;
@@ -107,7 +107,7 @@ class _LocationPageState extends State<LocationPage> {
   bool fetched = false;
   Future<void> fetchCentres() async {
     final response = await http.post(
-      Uri.parse('http://10.1.128.246:5000/location/nearest'),
+      Uri.parse('http://192.168.122.1:5000/location/nearest'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -131,7 +131,7 @@ class _LocationPageState extends State<LocationPage> {
               'distance': array[i]['distance'],
             });
           }
-          is_pos = true;
+          isPos = true;
           fetched = true;
         });
       }
@@ -154,9 +154,11 @@ class _LocationPageState extends State<LocationPage> {
 
   @override
   Widget build(BuildContext context) {
+    final address = _currentAddress ?? '';
     return Scaffold(
-      appBar: AppBar(title: const Text("Location Page")),
-      body: is_pos == true
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(title: const Text("Select Centres")),
+      body: isPos == true
           ? SingleChildScrollView(
               child: Center(
                 child: Column(
@@ -165,19 +167,18 @@ class _LocationPageState extends State<LocationPage> {
                     Text(''),
                     Center(
                         child: SingleChildScrollView(
-                            child: Container(
-                                child: Column(
+                            child: Column(
                       children: [
-                        Row(children: [
-                          Text(
-                            'Select Nearby Centers',
-                            style: TextStyle(
-                                fontFamily: AutofillHints.name,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 30,
-                                color: Colors.purple),
-                          )
-                        ]),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width - 20,
+                          child: Text(
+                            'Centers near $address',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(fontStyle: FontStyle.italic),
+                          ),
+                        ),
                         Text(''),
                         Column(
                           children: list_of_centers.map((e) {
@@ -189,12 +190,12 @@ class _LocationPageState extends State<LocationPage> {
                                     children: [
                                       Text(
                                         e['center_name'],
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyLarge,
                                       ),
                                       Text(e['address'],
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             color: Colors.grey,
                                           )),
                                       Text(e['distance'].toStringAsFixed(2) +
@@ -228,7 +229,7 @@ class _LocationPageState extends State<LocationPage> {
                             },
                             child: Text('Go Back')),
                       ],
-                    )))),
+                    ))),
                   ],
                 ),
               ),
@@ -238,7 +239,7 @@ class _LocationPageState extends State<LocationPage> {
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
+                  children: const [
                     CircularProgressIndicator(),
                     Text('Please wait while we load a list of centers...'),
                   ])),

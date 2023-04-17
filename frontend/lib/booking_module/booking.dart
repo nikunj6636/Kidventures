@@ -1,86 +1,78 @@
+import 'package:App/profile/profile.dart';
 import 'package:flutter/material.dart';
-import 'package:flat_3d_button/flat_3d_button.dart';
-import 'location.dart';
 import 'party.dart';
 import 'activity.dart';
 
 class MyBookingModule extends StatefulWidget {
   final String email;
-  MyBookingModule(this.email, {Key? key}) : super(key: key);
+  const MyBookingModule(this.email, {Key? key}) : super(key: key);
 
   @override
   State<MyBookingModule> createState() => _MyBookingModule();
 }
 
 class _MyBookingModule extends State<MyBookingModule> {
-  // Initialized variables
-  bool party_booking = false;
+  int pageIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(children: [
-        Text(''), // Adds padding from top
+    Widget Page = pageIndex == 0
+        ? MyActivityModule(widget.email)
+        : MyPartyModule(widget.email);
 
-        Text(party_booking == true ? 'PARTY BOOKING' : 'ACTIVITY BOOKING',
-            style: TextStyle(
-              fontFamily: AutofillHints.name,
-              fontWeight: FontWeight.bold,
-              fontSize: 40,
-              color: Colors.purple,
-            )),
-
-        ButtonBar(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Flat3dButton(
-              onPressed: () {
-                setState(() {
-                  party_booking = false;
-                });
-              },
-              child: Text('ACTIVITY'),
-              color: party_booking == false ? Colors.deepPurple : Colors.purple,
-            ),
-            Flat3dButton(
-              onPressed: () {
-                setState(() {
-                  party_booking = true;
-                });
-              },
-              child: Text('PARTY'),
-              color: party_booking == true ? Colors.deepPurple : Colors.purple,
-            )
-          ],
-        ),
-
-        SizedBox(
-          height: 10,
-        ),
-
-        party_booking
-            ? MyPartyModule(widget.email)
-            : MyActivityModule(widget.email),
-        ElevatedButton(
-          onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => LocationPage()));
-          },
-          child: Text(
-            'Find Centers Nearby',
-            style: TextStyle(
-              fontSize: 20,
-              fontFamily: AutofillHints.name,
-              color: Colors.white,
-            ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+          resizeToAvoidBottomInset: false,
+          appBar: AppBar(
+            title: Text(pageIndex == 0 ? 'Activity Booking' : 'Party Booking',
+                style: const TextStyle(color: Colors.white, fontSize: 18)),
+            backgroundColor: const Color.fromRGBO(33, 150, 243, 1),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: CircleAvatar(
+                  backgroundColor: const Color.fromRGBO(90, 90, 90, 0.2),
+                  radius: 20,
+                  child: IconButton(
+                    icon: const Icon(Icons.person),
+                    color: Colors.white,
+                    tooltip: "User's Profile",
+                    onPressed: () {
+                      setState(() {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    ProfilePage(widget.email)));
+                      });
+                    },
+                  ),
+                ),
+              ),
+            ],
           ),
-          style: ButtonStyle(
-            backgroundColor: MaterialStatePropertyAll<Color>(Colors.green),
-            mouseCursor:
-                MaterialStatePropertyAll<MouseCursor>(MouseCursor.defer),
+          body: SingleChildScrollView(
+            child: Center(child: Page),
           ),
-        )
-      ]),
+          bottomNavigationBar: BottomNavigationBar(
+            items: const [
+              BottomNavigationBarItem(
+                label: 'Activity',
+                icon: Icon(Icons.people),
+              ),
+              BottomNavigationBarItem(
+                label: 'Party',
+                icon: Icon(Icons.bookmark_border),
+              ),
+            ],
+            currentIndex: pageIndex,
+            onTap: (int index) {
+              setState(() {
+                pageIndex = index;
+              });
+            },
+          )),
     );
   }
 }

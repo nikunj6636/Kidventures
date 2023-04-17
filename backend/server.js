@@ -1,7 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require('cors');
-const loc = require('./Routes/handle_location')
+const loc = require('./Routes/handleLocation')
 
 const app = express();
 

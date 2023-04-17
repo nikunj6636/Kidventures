@@ -12,7 +12,7 @@ class AddChildPage extends StatefulWidget {
 
 class _AddChildPageState extends State<AddChildPage> {
   TextEditingController childName = TextEditingController(); // name of child
-  TextEditingController DateOfBirth = TextEditingController();
+  TextEditingController dateOfBirth = TextEditingController();
   String childGender = '';
 
   // current date
@@ -28,41 +28,36 @@ class _AddChildPageState extends State<AddChildPage> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-        child: Container(
-            child: AlertDialog(
-      title: Text('Add A Child'),
+        child: AlertDialog(
+      title: const Text('Add A Child'),
       content: Container(
           child: Column(
         children: [
           TextField(
             controller: childName,
-            decoration: InputDecoration(
-                labelText: 'Name Of The Child',
-                hintText: 'Enter Name Of The Child',
-                hintStyle: TextStyle(
-                  color: Colors.purple,
-                )),
+            decoration: const InputDecoration(
+              labelText: 'Name Of The Child',
+              hintText: 'Enter Name Of The Child',
+            ),
           ),
-
           TextField(
-            controller: DateOfBirth,
-            decoration: InputDecoration(
+            controller: dateOfBirth,
+            decoration: const InputDecoration(
                 icon: Icon(Icons.calendar_today),
                 labelText: 'Enter Date Of Birth'),
             onTap: () async {
               DateTime? picked = await showDatePicker(
                   context: context,
-                  initialDate: new DateTime(
-                      current.year - 10, current.month, current.day),
-                  firstDate: new DateTime(
-                      current.year - 18, current.month, current.day),
+                  initialDate:
+                      DateTime(current.year - 10, current.month, current.day),
+                  firstDate:
+                      DateTime(current.year - 18, current.month, current.day),
                   lastDate: DateTime.now());
 
               if (picked != null) {
                 setState(() {
-                  DateOfBirth.text = DateFormat('yyyy-MM-dd').format(picked);
+                  dateOfBirth.text = DateFormat('yyyy-MM-dd').format(picked);
                 });
-                print(DateOfBirth);
               }
             },
           ),
@@ -81,21 +76,19 @@ class _AddChildPageState extends State<AddChildPage> {
       actions: [
         TextButton(
             onPressed: () {
-              if (childName.text.length == 0 ||
-                  DateOfBirth == null ||
-                  childGender.length == 0) {
+              if (childName.text.isEmpty || childGender.isEmpty) {
                 return;
               }
-              widget.addChild(childName.text, DateOfBirth.text, childGender);
+              widget.addChild(childName.text, dateOfBirth.text, childGender);
               Navigator.pop(context);
             },
-            child: Text('ADD CHILD')),
+            child: const Text('ADD CHILD')),
         TextButton(
             onPressed: () {
               Navigator.pop(context);
             },
-            child: Text('CANCEL'))
+            child: const Text('CANCEL'))
       ],
-    )));
+    ));
   }
 }

@@ -1,42 +1,47 @@
-import 'package:App/authentication_module/otp.dart';
-import 'package:App/routes.dart';
+import 'package:App/authenticationModule/authenMain.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class SignUpPage extends StatelessWidget {
-  const SignUpPage({Key? key}) : super(key: key);
+class ChangePassword extends StatelessWidget {
+  final String email;
+  const ChangePassword(this.email, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final bool isSmallScreen = MediaQuery.of(context).size.width < 600;
 
-    return Scaffold(
-        body: Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        isSmallScreen
-            ? Column(
-                mainAxisSize: MainAxisSize.min,
-                children: const [
-                  _Logo(),
-                  _FormContent(),
-                ],
-              )
-            : Container(
-                padding: const EdgeInsets.all(32.0),
-                constraints: const BoxConstraints(maxWidth: 800),
-                child: Row(
-                  children: const [
-                    Expanded(child: _Logo()),
-                    Expanded(
-                      child: Center(child: _FormContent()),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+          resizeToAvoidBottomInset: false,
+          appBar: AppBar(title: const Text('Change Password')),
+          body: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              isSmallScreen
+                  ? Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const _Logo(),
+                        _FormContent(email),
+                      ],
+                    )
+                  : Container(
+                      padding: const EdgeInsets.all(32.0),
+                      constraints: const BoxConstraints(maxWidth: 800),
+                      child: Row(
+                        children: [
+                          const Expanded(child: _Logo()),
+                          Expanded(
+                            child: Center(child: _FormContent(email)),
+                          ),
+                        ],
+                      ),
                     ),
-                  ],
-                ),
-              ),
-      ],
-    ));
+            ],
+          )),
+    );
   }
 }
 
@@ -50,18 +55,20 @@ class _Logo extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        FlutterLogo(size: isSmallScreen ? 50 : 100),
+        // FlutterLogo(size: isSmallScreen ? 50 : 100),
         Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Text(
-            "Welcome, Create An Account !",
-            textAlign: TextAlign.center,
-            style: isSmallScreen
-                ? Theme.of(context).textTheme.headline5
-                : Theme.of(context)
-                    .textTheme
-                    .headline4
-                    ?.copyWith(color: Colors.black),
+          child: Expanded(
+            child: Text(
+              "New Password",
+              textAlign: TextAlign.center,
+              style: isSmallScreen
+                  ? Theme.of(context).textTheme.headlineSmall
+                  : Theme.of(context)
+                      .textTheme
+                      .headlineSmall
+                      ?.copyWith(color: Colors.black),
+            ),
           ),
         )
       ],
@@ -70,44 +77,51 @@ class _Logo extends StatelessWidget {
 }
 
 class _FormContent extends StatefulWidget {
-  const _FormContent({Key? key}) : super(key: key);
+  final String email;
+  const _FormContent(this.email, {Key? key}) : super(key: key);
 
   @override
   State<_FormContent> createState() => __FormContentState();
 }
 
 class __FormContentState extends State<_FormContent> {
-  bool _isPasswordVisible = false;
-  bool _rememberMe = false;
-
-  TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
-  TextEditingController confirm_password = TextEditingController();
+  TextEditingController confirmPassword = TextEditingController();
+
+  bool _isPasswordVisible = false;
+  String email = '';
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   // Now the action that button performs
-  Future<int> LoginHandler() async {
-    final response = await http.post(
-      Uri.parse('http://10.1.128.246:5000/parent/checkemail'),
+  Future<int> passwordChangeHandler() async {
+    final response = await http.put(
+      Uri.parse('http://192.168.122.1:5000/parent/changePassword'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, String>{
-        'email': email.text,
+        'email': widget.email,
+        'password': password.text,
       }),
     );
 
     if (response.statusCode == 200) {
-      // email and password created, redirect to OTP page
+      // password changed successfully
       return 1;
     } else if (response.statusCode == 400) {
-      // email already exists
+      // not updated
       return 0;
     } else {
       // error connecting to database
       throw Exception("Database connection failed");
     }
+  }
+
+  @override
+  void initState() {
+    email = widget.email;
+    super.initState();
   }
 
   @override
@@ -117,40 +131,12 @@ class __FormContentState extends State<_FormContent> {
       child: Form(
         key: _formKey,
         child: Column(
-          // mainAxisSize: MainAxisSize.min,
-          // mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextFormField(
-              validator: (value) {
-                // add email validation
-                if (value == null || value.isEmpty) {
-                  return 'Email field cannot be empty';
-                }
-
-                bool emailValid = RegExp(
-                        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                    .hasMatch(value);
-                if (!emailValid) {
-                  return 'Please enter a valid email';
-                }
-
-                return null;
-              },
-              decoration: const InputDecoration(
-                labelText: 'Email',
-                hintText: 'Enter your email',
-                prefixIcon: Icon(Icons.email_outlined),
-                border: OutlineInputBorder(),
-              ),
-              controller: email,
-            ),
-            _gap(),
             TextFormField(
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Password field cannot be empty';
                 }
-
                 // if (value.length < 8) {
                 //   return 'Password must be at least 8 characters';
                 // }
@@ -159,7 +145,7 @@ class __FormContentState extends State<_FormContent> {
               obscureText: !_isPasswordVisible,
               decoration: InputDecoration(
                   labelText: 'Password',
-                  hintText: 'Enter your password',
+                  hintText: 'Create new password',
                   prefixIcon: const Icon(Icons.lock_outline_rounded),
                   border: const OutlineInputBorder(),
                   suffixIcon: IconButton(
@@ -181,13 +167,10 @@ class __FormContentState extends State<_FormContent> {
                   return 'Password field cannot be empty';
                 }
 
-                if (password.text != confirm_password.text) {
+                if (password.text != confirmPassword.text) {
                   return 'Passwords does not match';
                 }
 
-                // if (value.length < 8) {
-                //   return 'Password must be at least 8 characters';
-                // }
                 return null;
               },
               obscureText: !_isPasswordVisible,
@@ -206,22 +189,7 @@ class __FormContentState extends State<_FormContent> {
                       });
                     },
                   )),
-              controller: confirm_password,
-            ),
-            // _gap(),
-            CheckboxListTile(
-              value: _rememberMe,
-              onChanged: (value) {
-                if (value == null) return;
-                setState(() {
-                  _rememberMe = value;
-                });
-              },
-              title: const Text(
-                  'By Signing up, I agree to the terms and conditions of this website.'),
-              controlAffinity: ListTileControlAffinity.leading,
-              dense: true,
-              contentPadding: const EdgeInsets.all(0),
+              controller: confirmPassword,
             ),
             _gap(),
             SizedBox(
@@ -234,31 +202,46 @@ class __FormContentState extends State<_FormContent> {
                 child: const Padding(
                   padding: EdgeInsets.all(10.0),
                   child: Text(
-                    'Sign in',
+                    'Change',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ),
                 onPressed: () {
                   if (_formKey.currentState?.validate() ?? false) {
-                    LoginHandler().then((value) {
+                    passwordChangeHandler().then((value) {
                       if (value == 1) {
-                        // redirect to the OTP page
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    HomePage(email.text, password.text)));
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: const Text('Password Change'),
+                                content: Text(
+                                    'Password changed successfully for $email'),
+                                actions: [
+                                  OutlinedButton(
+                                      child: const Text('OK'),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const AuthenticationPage()));
+                                      })
+                                ],
+                              );
+                            });
                         return;
                       } else {
                         showDialog(
                             context: context,
                             builder: (context) {
                               return AlertDialog(
-                                title: Text('Error During Sign Up'),
-                                content: Text('Email Already Exists'),
+                                title: const Text('error'),
+                                content: const Text('Email does not exist'),
                                 actions: [
                                   OutlinedButton(
-                                      child: Text('OK'),
+                                      child: const Text('OK'),
                                       onPressed: () {
                                         Navigator.of(context).pop();
                                       })

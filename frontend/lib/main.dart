@@ -1,12 +1,9 @@
-import 'package:App/authentication_module/authen_main.dart';
+import 'package:App/authenticationModule/authenMain.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'test.dart';
-
-import 'test.dart';
 
 void main() {
-  runApp(App());
+  runApp(const MyApp());
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive, overlays: [
     SystemUiOverlay.bottom,
     SystemUiOverlay.top,
@@ -23,11 +20,9 @@ class MyApp extends StatelessWidget {
       title: 'Booking App',
       theme: ThemeData(
         useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(
-            seedColor: Colors.blue), // Colors.fromRGB(0,0,255)
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
       ),
-      home:
-          AuthenticationPage(), // start with authentication module and navigate to MainPage
+      home: const AuthenticationPage(),
     );
   }
 }

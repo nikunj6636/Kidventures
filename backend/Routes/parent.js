@@ -8,10 +8,10 @@ const bcrypt =  require('bcrypt')
 const nodemailer = require('nodemailer');
 
 router.post('/checkemail',async (request,response)=>{
-  const userExists = await Parent.findOne({email: request.body.email}); // conition here
+  const user = await Parent.findOne({email: request.body.email}); // conition here
   try{
-    if(userExists){
-      response.status(400).send({exists: false});
+    if(user){
+      response.status(400).send({exists: true});
     }
     else {
       response.status(200).send({exists: false});
@@ -59,6 +59,23 @@ router.post("/signin", async (request, response) => {
     }
   });
 
+
+router.put("/changePassword", async (request, response) => { 
+  let {password} = request.body;
+  
+  const salt = await bcrypt.genSalt(10);
+  const hashPassword = await bcrypt.hash(password, salt);
+  password = hashPassword;
+
+  await Parent.updateOne({email: request.body.email}, {$set: {password: password}})
+  .then(res => {
+    response.send({message: "updated"}).status(200);
+  })
+  .catch(err => {
+    response.send(err).status(400);
+  })
+});
+
   
 router.post("/sendOTP", async (request, response) => { 
 
@@ -70,7 +87,7 @@ router.post("/sendOTP", async (request, response) => {
     }
   });
 
-  const OTP = Math.floor(Math.random() * 1000000);  // random 6 digit number generated
+  const OTP = Math.floor(100000 + Math.random() * 900000); // [10^5,10^6]
   
   var mailOptions = {
     from: 'nikunjproject6@gmail.com',

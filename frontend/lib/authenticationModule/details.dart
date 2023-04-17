@@ -1,47 +1,50 @@
-import 'package:App/profile/profile.dart';
-import 'package:App/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:App/profile/profile.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class SignInPage extends StatelessWidget {
-  const SignInPage({Key? key}) : super(key: key);
+class DetailsPage extends StatelessWidget {
+  final String email;
+  final String password;
+
+  const DetailsPage(this.email, this.password, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final bool isSmallScreen = MediaQuery.of(context).size.width < 600;
-
     // print(isSmallScreen);
 
-    return Scaffold(
-        body: Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        isSmallScreen
-            ? Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: const [
-                  _Logo(),
-                  _FormContent(),
-                ],
-              )
-            : Container(
-                padding: const EdgeInsets.all(32.0),
-                constraints: const BoxConstraints(maxWidth: 800),
-                child: Row(
-                  children: const [
-                    Expanded(child: _Logo()),
-                    Expanded(
-                      child: Center(child: _FormContent()),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+          resizeToAvoidBottomInset: false,
+          body: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              isSmallScreen
+                  ? Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const _Logo(),
+                        _FormContent(email, password),
+                      ],
+                    )
+                  : Container(
+                      padding: const EdgeInsets.all(32.0),
+                      constraints: const BoxConstraints(maxWidth: 800),
+                      child: Row(
+                        children: [
+                          const Expanded(child: _Logo()),
+                          Expanded(
+                            child: Center(child: _FormContent(email, password)),
+                          ),
+                        ],
+                      ),
                     ),
-                  ],
-                ),
-              ),
-      ],
-    )
-        // )
-        );
+            ],
+          )),
+    );
   }
 }
 
@@ -55,17 +58,17 @@ class _Logo extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        FlutterLogo(size: isSmallScreen ? 50 : 100),
+        // FlutterLogo(size: isSmallScreen ? 50 : 100),
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Text(
-            "Welcome, Please Sign In!",
+            "Please Enter\n Your Personal Details",
             textAlign: TextAlign.center,
             style: isSmallScreen
-                ? Theme.of(context).textTheme.headline5
+                ? Theme.of(context).textTheme.headlineSmall
                 : Theme.of(context)
                     .textTheme
-                    .headline4
+                    .headlineSmall
                     ?.copyWith(color: Colors.black),
           ),
         )
@@ -75,41 +78,40 @@ class _Logo extends StatelessWidget {
 }
 
 class _FormContent extends StatefulWidget {
-  const _FormContent({Key? key}) : super(key: key);
+  final String email;
+  final String password;
+
+  const _FormContent(this.email, this.password, {Key? key}) : super(key: key);
 
   @override
   State<_FormContent> createState() => __FormContentState();
 }
 
 class __FormContentState extends State<_FormContent> {
-  bool _isPasswordVisible = false;
-  bool _rememberMe = false;
+  TextEditingController name = TextEditingController();
+  TextEditingController phone = TextEditingController();
 
-  TextEditingController email = TextEditingController();
-  TextEditingController password = TextEditingController();
+  bool agree = false;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  // Now the action that button performs
-  Future<int> LoginHandler() async {
+  Future<int> infoHandler() async {
     final response = await http.post(
-      Uri.parse('http://10.1.128.246:5000/parent/signin'),
+      Uri.parse('http://192.168.122.1:5000/parent/signup'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: jsonEncode(<String, String>{
-        'email': email.text,
-        'password': password.text,
+      body: jsonEncode(<String, dynamic>{
+        'email': widget.email,
+        'password': widget.password,
+        'name': name.text,
+        'mobile_no': int.parse(phone.text),
       }),
     );
 
     if (response.statusCode == 200) {
       return 1;
-    } else if (response.statusCode == 403) {
-      // invalid credentials
-      return 0;
     } else {
-      // error connecting with database
       throw Exception('Failed to connect to server');
     }
   }
@@ -126,69 +128,50 @@ class __FormContentState extends State<_FormContent> {
           children: [
             TextFormField(
               validator: (value) {
-                // add email validation
+                // add name validation
                 if (value == null || value.isEmpty) {
-                  return 'Email field cannot be empty';
+                  return 'Name field cannot be empty';
                 }
-
-                bool emailValid = RegExp(
-                        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                    .hasMatch(value);
-                if (!emailValid) {
-                  return 'Please enter a valid email';
-                }
-
                 return null;
               },
               decoration: const InputDecoration(
-                labelText: 'Email',
-                hintText: 'Enter your email',
-                prefixIcon: Icon(Icons.email_outlined),
+                labelText: 'Name',
+                hintText: 'Enter your Name',
                 border: OutlineInputBorder(),
               ),
-              controller: email,
+              controller: name,
             ),
             _gap(),
             TextFormField(
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Password field cannot be empty';
+                  return 'Phone number is Required';
+                } else if (num.tryParse(value) == null) {
+                  return 'Phone number contains must contain digits only';
+                } else if (value.length != 10) {
+                  return 'Phone number must be of 10 digits';
                 }
-
-                // if (value.length < 8) {
-                //   return 'Password must be at least 8 characters';
-                // }
                 return null;
               },
-              obscureText: !_isPasswordVisible,
-              decoration: InputDecoration(
-                  labelText: 'Password',
-                  hintText: 'Enter your password',
-                  prefixIcon: const Icon(Icons.lock_outline_rounded),
-                  border: const OutlineInputBorder(),
-                  suffixIcon: IconButton(
-                    icon: Icon(_isPasswordVisible
-                        ? Icons.visibility_off
-                        : Icons.visibility),
-                    onPressed: () {
-                      setState(() {
-                        _isPasswordVisible = !_isPasswordVisible;
-                      });
-                    },
-                  )),
-              controller: password,
+              decoration: const InputDecoration(
+                labelText: 'Phone number',
+                hintText: 'Enter your phone number',
+                prefixIcon: Icon(Icons.phone),
+                border: OutlineInputBorder(),
+              ),
+              controller: phone,
             ),
             _gap(),
             CheckboxListTile(
-              value: _rememberMe,
+              value: agree,
               onChanged: (value) {
                 if (value == null) return;
                 setState(() {
-                  _rememberMe = value;
+                  agree = value;
                 });
               },
               title: const Text(
-                  'By Signing up, I agree to the terms and conditions of this website.'),
+                  'I assure that details provided are best of my knowledge'),
               controlAffinity: ListTileControlAffinity.leading,
               dense: true,
               contentPadding: const EdgeInsets.all(0),
@@ -204,31 +187,29 @@ class __FormContentState extends State<_FormContent> {
                 child: const Padding(
                   padding: EdgeInsets.all(10.0),
                   child: Text(
-                    'Sign in',
+                    'Sign Up',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ),
                 onPressed: () {
                   if (_formKey.currentState?.validate() ?? false) {
-                    LoginHandler().then((value) {
+                    infoHandler().then((value) {
                       if (value == 1) {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => 
-                                // MainPage(email.text,)
-                                ProfilePage1(email.text,)
-                                ));
+                                builder: (context) =>
+                                    ProfilePage(widget.email)));
                       } else {
                         showDialog(
                             context: context,
                             builder: (context) {
                               return AlertDialog(
-                                title: Text('Error During Sign In'),
-                                content: Text('Invalid Credentials Try Again'),
+                                title: const Text('Error during Sign up'),
+                                content: const Text('Enter valid information'),
                                 actions: [
                                   OutlinedButton(
-                                      child: Text('OK'),
+                                      child: const Text('OK'),
                                       onPressed: () {
                                         Navigator.of(context).pop();
                                       })
