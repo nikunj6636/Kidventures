@@ -42,13 +42,13 @@ router.post("/signin", async (request, response) => {
     const user = await Parent.findOne({email: request.body.email}); // conition here
     try{
       if (!user) {
-        response.status(403).send({ message: "Email does not exist"});
+        response.status(403).send({ message: "Email does not exist"});	// put 401 here if email does not exist error is to be displayed.
         return;
       }
 
       const cmp = await bcrypt.compare(request.body.password, user.password);
       if (cmp === false){
-        response.status(403).send({ meassage: "Incorrect password"});
+        response.status(403).send({ meassage: "Incorrect password"} );
         return;
       }
       response.status(200).send({message: "User authenticated successfully"}); // response in {accessToken: __} object is passed

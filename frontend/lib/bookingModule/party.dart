@@ -1,4 +1,4 @@
-import 'package:App/booking_module/location.dart';
+import 'package:App/bookingModule/location.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:number_inc_dec/number_inc_dec.dart';

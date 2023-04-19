@@ -12,7 +12,7 @@ class SignInPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final bool isSmallScreen = MediaQuery.of(context).size.width < 600;
     // print(isSmallScreen);
-    
+
     return Container(
       child: isSmallScreen
           ? Column(
@@ -99,9 +99,12 @@ class __FormContentState extends State<_FormContent> {
 
     if (response.statusCode == 200) {
       return 1;
+    } else if (response.statusCode == 401) {
+      // email does not exist
+      return 2;
     } else if (response.statusCode == 403) {
       // invalid credentials
-      return 0;
+      return 3;
     } else {
       // error connecting with database
       throw Exception('Failed to connect to server');
@@ -223,8 +226,11 @@ class __FormContentState extends State<_FormContent> {
                             builder: (context) {
                               return AlertDialog(
                                 title: const Text('Error During Sign In'),
-                                content:
-                                    const Text('Invalid Credentials Try Again'),
+                                content: value == 2
+                                    ? const Text(
+                                        "Email does not exist! Proceed to Sign Up")
+                                    : const Text(
+                                        'Invalid Credentials Try Again'),
                                 actions: [
                                   OutlinedButton(
                                       child: const Text('OK'),

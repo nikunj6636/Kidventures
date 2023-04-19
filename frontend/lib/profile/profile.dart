@@ -1,4 +1,4 @@
-import 'package:App/booking_module/booking.dart';
+import 'package:App/bookingModule/booking.dart';
 import 'package:App/profile/editProfile.dart';
 import 'package:flutter/material.dart';
 import 'package:App/authenticationModule/authenMain.dart';
