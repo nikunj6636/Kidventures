@@ -3,6 +3,8 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
+
 
 class LocationPage extends StatefulWidget {
   const LocationPage({Key? key}) : super(key: key);
@@ -104,10 +106,22 @@ class _LocationPageState extends State<LocationPage> {
   double latitude = 0;
   double longtitude = 0;
 
+    void _handlePaymentSuccess(PaymentSuccessResponse response) {
+  // Do something when payment succeeds
+}
+
+void _handlePaymentError(PaymentFailureResponse response) {
+  // Do something when payment fails
+}
+
+void _handleExternalWallet(ExternalWalletResponse response) {
+  // Do something when an external wallet was selected
+}
+
   bool fetched = false;
   Future<void> fetchCentres() async {
     final response = await http.post(
-      Uri.parse('http://192.168.122.1:5000/location/nearest'),
+      Uri.parse('http://10.1.134.42:5000/location/nearest'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -220,14 +234,29 @@ class _LocationPageState extends State<LocationPage> {
                         ),
                         Text(''),
                         ElevatedButton(
-                            onPressed: () {},
-                            child: Text('Proceed To Payment')),
-                        Text(''),
+                            onPressed: () {
+                                Razorpay razorpay = Razorpay();
+                                var options = {
+                                  'key': 'rzp_test_X3Lp0ol12yjPmd',
+                                  'amount': 100,
+                                  'name': 'Kidventures',
+                                  'description': 'Child Payment',
+                                  'retry': {'enabled': true, 'max_count': 1},
+                                  'send_sms_hash': true,
+                                  'prefill': {'contact': '8888888888', 'email': 'test@razorpay.com'},
+                                };
+                                razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
+                                razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
+                                razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
+                                razorpay.open(options);
+                            },
+                            child: const Text('Proceed To Payment')),
+                        const Text(''),
                         ElevatedButton(
                             onPressed: () {
                               Navigator.of(context).pop();
                             },
-                            child: Text('Go Back')),
+                            child: const Text('Go Back')),
                       ],
                     ))),
                   ],

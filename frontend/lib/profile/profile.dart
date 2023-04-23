@@ -12,6 +12,8 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
 class Child {
   final String name;
   final String DOB;
@@ -47,7 +49,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<void> fetchProfile() async {
     final response = await http.post(
-      Uri.parse('http://192.168.122.1:5000/parent/profile'),
+      Uri.parse('http://10.1.134.42:5000/parent/profile'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -63,7 +65,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
       // children
       final childresponse = await http.post(
-        Uri.parse('http://192.168.122.1:5000/parent/children'),
+        Uri.parse('http://10.1.134.42:5000/parent/children'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -95,7 +97,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<void> addChild(String name, String DOB, String gender) async {
     final response = await http.put(
-      Uri.parse('http://192.168.122.1:5000/parent/update/addchild'),
+      Uri.parse('http://10.1.134.42:5000/parent/update/addchild'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -126,6 +128,13 @@ class _ProfilePageState extends State<ProfilePage> {
 
     // fetch the details of the parent
     fetchProfile();
+  }
+
+  final _storage = const FlutterSecureStorage();
+
+  removeCredentials() async {
+    await _storage.delete(key: "KEY_USERNAME");
+    await _storage.delete(key: "KEY_PASSWORD");
   }
 
   @override
@@ -246,6 +255,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 leading: const Icon(Icons.logout_outlined),
                 title: const Text('Log Out'),
                 onTap: () {
+                  removeCredentials();
                   Navigator.push(
                       context,
                       MaterialPageRoute(

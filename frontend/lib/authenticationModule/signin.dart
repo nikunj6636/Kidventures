@@ -4,6 +4,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class SignInPage extends StatelessWidget {
   const SignInPage({Key? key}) : super(key: key);
@@ -76,6 +77,8 @@ class _FormContent extends StatefulWidget {
 }
 
 class __FormContentState extends State<_FormContent> {
+  final _storage = const FlutterSecureStorage();
+
   bool _isPasswordVisible = false;
   bool _rememberMe = false;
 
@@ -86,8 +89,9 @@ class __FormContentState extends State<_FormContent> {
 
   // Now the action that button performs
   Future<int> loginHandler() async {
+        // Write values
     final response = await http.post(
-      Uri.parse('http://192.168.122.1:5000/parent/signin'),
+      Uri.parse('http://10.1.134.42:5000/parent/signin'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -98,6 +102,8 @@ class __FormContentState extends State<_FormContent> {
     );
 
     if (response.statusCode == 200) {
+      await _storage.write(key: "KEY_USERNAME", value: email.text);
+        await _storage.write(key: "KEY_PASSWORD", value: password.text);
       return 1;
     } else if (response.statusCode == 401) {
       // email does not exist
@@ -110,6 +116,7 @@ class __FormContentState extends State<_FormContent> {
       throw Exception('Failed to connect to server');
     }
   }
+  
 
   @override
   Widget build(BuildContext context) {
