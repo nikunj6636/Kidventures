@@ -5,7 +5,8 @@ import 'activity.dart';
 
 class MyBookingModule extends StatefulWidget {
   final String email;
-  const MyBookingModule(this.email, {Key? key}) : super(key: key);
+  final int mobileNumber;
+  const MyBookingModule(this.email, this.mobileNumber,{Key? key}) : super(key: key);
 
   @override
   State<MyBookingModule> createState() => _MyBookingModule();
@@ -17,8 +18,8 @@ class _MyBookingModule extends State<MyBookingModule> {
   @override
   Widget build(BuildContext context) {
     Widget Page = pageIndex == 0
-        ? MyActivityModule(widget.email)
-        : MyPartyModule(widget.email);
+        ? MyActivityModule(widget.email, widget.mobileNumber)
+        : MyPartyModule(widget.email, widget.mobileNumber);
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,

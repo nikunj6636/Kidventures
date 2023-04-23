@@ -1,12 +1,12 @@
-import 'package:App/bookingModule/location.dart';
+import 'package:App/bookingModule/location2.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:number_inc_dec/number_inc_dec.dart';
 
 class MyPartyModule extends StatefulWidget {
   final String email;
-
-  const MyPartyModule(this.email, {Key? key}) : super(key: key);
+  final int mobileNumber;
+  const MyPartyModule(this.email, this.mobileNumber, {Key? key}) : super(key: key);
 
   @override
   State<MyPartyModule> createState() => _MyPartyModule();
@@ -269,7 +269,7 @@ class _MyPartyModule extends State<MyPartyModule> {
           int value = checkValid();
           if (value == valid) {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const LocationPage()));
+                MaterialPageRoute(builder: (context) => LocationPage(widget.email, adultNumber.text, childNumber.text, partyBookingDate.text, partyStartTime.text, duration, widget.mobileNumber)));
           } else {
             showDialog(
                 context: context,

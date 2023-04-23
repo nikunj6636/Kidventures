@@ -1,4 +1,5 @@
 import 'package:App/bookingModule/location.dart';
+import 'package:App/main.dart';
 import 'package:flutter/material.dart';
 import 'package:multiselect/multiselect.dart';
 
@@ -9,8 +10,8 @@ import 'package:intl/intl.dart';
 
 class MyActivityModule extends StatefulWidget {
   final String email;
-
-  const MyActivityModule(this.email, {Key? key}) : super(key: key);
+  final int mobileNumber;
+  const MyActivityModule(this.email, this.mobileNumber, {Key? key}) : super(key: key);
 
   @override
   State<MyActivityModule> createState() => _MyActivityModule();
@@ -307,7 +308,7 @@ class _MyActivityModule extends State<MyActivityModule> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => LocationPage()));
+                                builder: (context) => LocationPage(widget.email, selected, chosenActivities, bookingDate.text, activityDropTime.text, duration, widget.mobileNumber)));
                       } else {
                         showDialog(
                             context: context,

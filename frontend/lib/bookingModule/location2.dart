@@ -3,14 +3,14 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:App/bookingModule/payment.dart';
+import 'package:App/bookingModule/payment2.dart';
 import 'package:App/profile/profile.dart' show Child;
 
 class LocationPage extends StatefulWidget {
-  final String email, bookingDate, dropTime;
+  final String email, bookingDate, startTime;
   final int duration, mobileNumber;
-  final List<String> selectedActivites, children;
-  const LocationPage(this.email, this.children, this.selectedActivites, this.bookingDate, this.dropTime, this.duration, this.mobileNumber, {Key? key}) : super(key: key);
+  final String adult, children;
+  const LocationPage(this.email, this.adult, this.children, this.bookingDate, this.startTime, this.duration, this.mobileNumber, {Key? key}) : super(key: key);
 
   @override
   State<LocationPage> createState() => _LocationPageState();
@@ -230,7 +230,7 @@ class _LocationPageState extends State<LocationPage> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              PaymentGatewayPage(widget.email, widget.children, widget.selectedActivites, widget.bookingDate, widget.dropTime, widget.duration, widget.mobileNumber)));
+                                              PaymentGatewayPage(widget.email, widget.adult, widget.children, widget.bookingDate, widget.startTime, widget.duration, widget.mobileNumber)));
                             },
                             child: const Text('Proceed To Payment')),
                         const Text(''),

@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require('cors');
 const loc = require('./Routes/handleLocation')
+const activ = require('./Routes/activity')
 
 const app = express();
 
@@ -30,6 +31,8 @@ mongoose.connect( uri , { useNewUrlParser: true, useUnifiedTopology: true })
 app.use("/parent/", require("./Routes/parent"));
 
 app.use('/location',loc);
+
+app.use("/activity", activ);
 
 app.listen(port, () => {
   console.log("Server is running at port", port);

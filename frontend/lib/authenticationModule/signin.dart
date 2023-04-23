@@ -82,6 +82,8 @@ class __FormContentState extends State<_FormContent> {
   bool _isPasswordVisible = false;
   bool _rememberMe = false;
 
+  
+
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
 
