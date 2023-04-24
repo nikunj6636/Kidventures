@@ -109,119 +109,118 @@ class _PaymentGatewayPageState extends State<PaymentGatewayPage> {
     }
     name += widget.children.last;
 
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          title: const Text("Billing"),
-        ),
-        body: infoLoaded == true
-            ? SingleChildScrollView(
-                child: Center(
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Card(
-                          child: Column(
-                            children: <Widget>[
-                              ListTile(
-                                leading:
-                                    const Icon(Icons.monetization_on_sharp),
-                                title: const Text("Booking Details"),
-                                subtitle: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    Text('Children Selected: $name'),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        title: const Text("Billing"),
+      ),
+      body: infoLoaded == true
+          ? SingleChildScrollView(
+              child: Center(
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Column(
+                          children: <Widget>[
+                            ListTile(
+                              leading: const Icon(Icons.monetization_on_sharp),
+                              title: const Text("Booking Details"),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text('Children Selected: $name'),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                      "Date of Booking: ${widget.bookingDate}"),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text("Drop off time: ${widget.dropTime}"),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text("Duration: ${widget.duration} hours"),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text("Center: ${widget.centerName}"),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  const Text(
+                                    'Description:',
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                  for (var item in prices)
                                     Text(
-                                        "Date of Booking: ${widget.bookingDate}"),
-                                    const SizedBox(
-                                      height: 10,
+                                      item,
+                                      style:
+                                          const TextStyle(color: Colors.black),
                                     ),
-                                    Text("Drop off time: ${widget.dropTime}"),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    Text("Duration: ${widget.duration} hours"),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    Text("Center: ${widget.centerName}"),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    const Text(
-                                      'Description:',
-                                      style: TextStyle(color: Colors.black),
-                                    ),
-                                    for (var item in prices)
-                                      Text(
-                                        item,
-                                        style: const TextStyle(
-                                            color: Colors.black),
-                                      ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    Text(
-                                      "Total: Rs $total",
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black),
-                                    ),
-                                  ],
-                                ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    "Total: Rs $total",
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
-                      ElevatedButton(
-                          onPressed: () {
-                            Razorpay razorpay = Razorpay();
-                            var options = {
-                              'key': 'rzp_test_X3Lp0ol12yjPmd',
-                              'amount': total * 100,
-                              'name': 'Kidventures',
-                              'description': 'Child Payment',
-                              'retry': {'enabled': true, 'max_count': 1},
-                              'send_sms_hash': true,
-                              'prefill': {
-                                'contact': widget.mobileNumber,
-                                'email': widget.email
-                              },
-                            };
-                            razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS,
-                                _handlePaymentSuccess);
-                            razorpay.on(Razorpay.EVENT_PAYMENT_ERROR,
-                                _handlePaymentError);
-                            razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET,
-                                _handleExternalWallet);
-                            razorpay.open(options);
-                          },
-                          child: const Text("Pay with Razorpay")),
-                    ],
-                  ),
+                    ),
+                    ElevatedButton(
+                        onPressed: () {
+                          Razorpay razorpay = Razorpay();
+                          var options = {
+                            'key': 'rzp_test_X3Lp0ol12yjPmd',
+                            'amount': total * 100,
+                            'name': 'Kidventures',
+                            'description': 'Child Payment',
+                            'retry': {'enabled': true, 'max_count': 1},
+                            'send_sms_hash': true,
+                            'prefill': {
+                              'contact': widget.mobileNumber,
+                              'email': widget.email
+                            },
+                          };
+                          razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS,
+                              _handlePaymentSuccess);
+                          razorpay.on(Razorpay.EVENT_PAYMENT_ERROR,
+                              _handlePaymentError);
+                          razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET,
+                              _handleExternalWallet);
+                          razorpay.open(options);
+                        },
+                        child: const Text("Pay with Razorpay")),
+                  ],
                 ),
-              )
-            : Center(
-                child: Column(
-                children: const [
-                  CircularProgressIndicator(),
-                  Text('Generating your bill...'),
-                ],
-              )),
-      ),
+              ),
+            )
+          : Center(
+              child: Column(
+              children: const [
+                CircularProgressIndicator(),
+                Text('Generating your bill...'),
+              ],
+            )),
     );
   }
 }

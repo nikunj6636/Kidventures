@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:App/profile/profile.dart';
 
 class EditProfilePage extends StatefulWidget {
   final String email;
@@ -127,6 +128,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
             icon: const Icon(Icons.arrow_back_ios),
             onPressed: () {
               Navigator.of(context).pop();
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ProfilePage(
+                            widget.email,
+                          )));
             },
           ),
         ),

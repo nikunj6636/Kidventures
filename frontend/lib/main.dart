@@ -9,8 +9,7 @@ import 'package:http/http.dart' as http;
 var emailtext = '';
 var passwordtext = '';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+Future<void> initasync() async {
   const storage = FlutterSecureStorage();
   emailtext = await storage.read(key: "KEY_USERNAME") ?? '';
   passwordtext = await storage.read(key: "KEY_PASSWORD") ?? '';
@@ -31,10 +30,17 @@ void main() async {
   } else {
     runApp(const MyApp());
   }
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive, overlays: [
-    SystemUiOverlay.bottom,
-    SystemUiOverlay.top,
-  ]);
+}
+
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  initasync().then((value) {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive, overlays: [
+      SystemUiOverlay.bottom,
+      SystemUiOverlay.top,
+    ]);
+  });
 }
 
 class MyApp extends StatelessWidget {
