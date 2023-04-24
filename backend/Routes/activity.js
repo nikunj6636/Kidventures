@@ -4,6 +4,7 @@ const router = express.Router()
 const Activity  = require('../Models/activity')
 const Booking = require('../Models/activityBooking')
 const Party = require('../Models/partyBooking')
+const Center = require('../Models/center')
 
 router.post('/getPrice', async (req, res) => {
     let {activity_name} = req.body;
@@ -34,7 +35,9 @@ router.post('/confirmBooking', async (req, res) => {
         centerName: center_address,
     })
     try {
-        await activityInstance.save();
+        let newInstance = await activityInstance.save();
+        let center = await Center.findOneAndUpdate({address : center_address}, {$push:{activity_booking:newInstance._id}})
+        console.log(center);
         res.status(200).send({message: "Booking confirmed"});
         console.log(activityInstance);
     }
@@ -58,7 +61,9 @@ router.post('/confirmParty', async (req, res) => {
     })
     console.log(partyInstance);
     try {
-        await partyInstance.save();
+        let newInstance = await partyInstance.save();
+        let center = await Center.findOneAndUpdate({address : centerAddress}, {$push:{party_booking:newInstance._id}})
+        console.log(center);
         res.status(200).send({message: "Booking confirmed"});
         // console.log(activityInstance);
     }

@@ -27,13 +27,13 @@ const CenterSchema = new mongoose.Schema({
   }],
 
   // array of ObjectId of future bookings of the activity
-  activity_bookings: [{
+  activity_booking: [{
     type: ObjectId,
     ref: "ActivityBooking",
   }],
 
   // array of ObjectId of future party bookings
-  party_bookings: [{
+  party_booking: [{
     type: ObjectId,
     ref: "PartyBooking",
   }],
