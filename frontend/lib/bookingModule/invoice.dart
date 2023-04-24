@@ -27,7 +27,7 @@ class InvoicePage extends StatefulWidget {
 }
 
 class _InvoicePageState extends State<InvoicePage> {
- bool infoLoaded = true;
+  bool infoLoaded = true;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,7 @@ class _InvoicePageState extends State<InvoicePage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text("Booking Confirmed"),
+        title: const Text("Invoice"),
       ),
       body: infoLoaded == true
           ? SingleChildScrollView(
@@ -48,28 +48,26 @@ class _InvoicePageState extends State<InvoicePage> {
                 child: Column(
                   children: [
                     SizedBox(
-                                    height: MediaQuery.of(context).size.height/2 - 260,
-                                  ),
+                      height: MediaQuery.of(context).size.height / 2 - 260,
+                    ),
                     Padding(
                       padding: const EdgeInsets.all(14.0),
                       child: Card(
-                        color: Color.fromARGB(255, 114, 198, 228),
                         shape: RoundedRectangleBorder(
-                          side: const BorderSide(
-                            color: Color.fromARGB(255, 8, 13, 175),
-                          ),
+                          side: const BorderSide(),
                           borderRadius: BorderRadius.circular(20),
-                          
                         ),
                         child: Column(
                           children: <Widget>[
                             const SizedBox(
-                                    height: 20,
-                                  ),
+                              height: 20,
+                            ),
                             ListTile(
-                              
-                              leading: const Icon(Icons.check_circle, color: Color.fromARGB(255, 57, 235, 63),),
-                              title: const Text("Booking Details"),
+                              leading: const Icon(
+                                Icons.check_circle,
+                                color: Color.fromARGB(255, 57, 235, 63),
+                              ),
+                              title: const Text("Invoice"),
                               subtitle: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -77,26 +75,6 @@ class _InvoicePageState extends State<InvoicePage> {
                                     height: 10,
                                   ),
                                   const Text('Payment Confirmed'),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  Text('Children Selected: $name'),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  Text(
-                                      "Date of Booking: ${widget.bookingDate}"),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  Text("Drop off time: ${widget.dropTime}"),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  Text("Duration: ${widget.duration} hours"),
                                   const SizedBox(
                                     height: 10,
                                   ),

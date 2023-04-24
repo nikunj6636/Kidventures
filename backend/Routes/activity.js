@@ -96,7 +96,6 @@ router.post('/fetch/activities', async (req, res) => {
          var date1 = new Date(Date.parse(elem.dropOffTime))
          var time1 = date1.getTime();
          var curr = new Date();
-         console.log(time1,curr.getTime())
          var x = (time1 >= curr.getTime());
  
          elem["upcoming"] = x;
@@ -118,10 +117,10 @@ router.post('/fetch/activities', async (req, res) => {
      Party.find({parentEmail: email})
      .then(response => {
       response.sort((a,b)=>{
-          var date1 = new Date(Date.parse(a.dropOffTime))
+          var date1 = new Date(Date.parse(a.startTime))
           var time1 = date1.getTime();
   
-          var date2 = new Date(Date.parse(b.dropOffTime))
+          var date2 = new Date(Date.parse(b.startTime))
           var time2 = date2.getTime();
   
           return time2 - time1; 
@@ -132,10 +131,9 @@ router.post('/fetch/activities', async (req, res) => {
  
          var elem = response[i].toJSON();
  
-         var date1 = new Date(Date.parse(elem.dropOffTime))
+         var date1 = new Date(Date.parse(elem.startTime))
          var time1 = date1.getTime();
          var curr = new Date();
-         console.log(time1,curr.getTime())
          var x = (time1 >= curr.getTime());
  
          elem["upcoming"] = x;

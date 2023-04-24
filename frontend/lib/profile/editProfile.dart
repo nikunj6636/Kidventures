@@ -28,7 +28,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   Future<void> updateProfile() async {
     final response = await http.put(
-      Uri.parse('http://192.168.122.1:5000/parent/update/profile'),
+      Uri.parse('http://192.168.174.180:5000/parent/update/profile'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -80,7 +80,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   Future<void> fetchProfile() async {
     final response = await http.post(
-      Uri.parse('http://192.168.122.1:5000/parent/profile'),
+      Uri.parse('http://192.168.174.180:5000/parent/profile'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -88,6 +88,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
         'email': widget.email,
       }),
     );
+
+    if (!mounted) {
+      return;
+    }
 
     if (response.statusCode == 200) {
       setState(() {

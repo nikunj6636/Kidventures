@@ -40,7 +40,7 @@ class _PaymentGatewayPageState extends State<PaymentGatewayPage> {
   void _handlePaymentSuccess(PaymentSuccessResponse response) async {
     final navigator = Navigator.of(context);
     final response = await http.post(
-      Uri.parse('http://192.168.122.1:5000/activity/confirmBooking'),
+      Uri.parse('http://192.168.174.180:5000/activity/confirmBooking'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -84,7 +84,7 @@ class _PaymentGatewayPageState extends State<PaymentGatewayPage> {
   getPrice(String activityName) async {
     // Write
     final response = await http.post(
-      Uri.parse('http://192.168.122.1:5000/activity/getPrice'),
+      Uri.parse('http://192.168.174.180:5000/activity/getPrice'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -95,8 +95,9 @@ class _PaymentGatewayPageState extends State<PaymentGatewayPage> {
 
     if (response.statusCode == 200) {
       int cost = jsonDecode(response.body)['price'];
-      total += cost * widget.duration;
-      String tobeadded = "$activityName     $cost x${widget.duration}";
+      total += cost * widget.duration * widget.children.length;
+      String tobeadded =
+          "$activityName     $cost x${widget.duration} x${widget.children.length}";
       prices.add(tobeadded);
       if (prices.length == widget.selectedActivites.length) {
         setState(() {

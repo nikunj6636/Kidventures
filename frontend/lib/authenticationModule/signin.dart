@@ -91,7 +91,7 @@ class __FormContentState extends State<_FormContent> {
   Future<int> loginHandler() async {
     // Write values
     final response = await http.post(
-      Uri.parse('http://192.168.122.1:5000/parent/signin'),
+      Uri.parse('http://192.168.174.180:5000/parent/signin'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -209,6 +209,42 @@ class __FormContentState extends State<_FormContent> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(4)),
                 ),
+                onPressed: !_rememberMe
+                    ? null
+                    : () {
+                        if (_formKey.currentState?.validate() ?? false) {
+                          loginHandler().then((value) {
+                            if (value == 1) {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ProfilePage(
+                                            email.text,
+                                          )));
+                            } else {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: const Text('Error During Sign In'),
+                                      content: value == 2
+                                          ? const Text(
+                                              "Email does not exist! Proceed to Sign Up")
+                                          : const Text(
+                                              'Invalid Credentials Try Again'),
+                                      actions: [
+                                        OutlinedButton(
+                                            child: const Text('OK'),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            })
+                                      ],
+                                    );
+                                  });
+                            }
+                          });
+                        }
+                      },
                 child: const Padding(
                   padding: EdgeInsets.all(10.0),
                   child: Text(
@@ -216,42 +252,6 @@ class __FormContentState extends State<_FormContent> {
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ),
-                onPressed: () {
-                  if (_formKey.currentState?.validate() ?? false) {
-                    loginHandler().then((value) {
-                      if (value == 1) {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ProfilePage(
-                                      email.text,
-                                    )));
-                      } else {
-                        showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                title: const Text('Error During Sign In'),
-                                content: value == 2
-                                    ? const Text(
-                                        "Email does not exist! Proceed to Sign Up")
-                                    : const Text(
-                                        'Invalid Credentials Try Again'),
-                                actions: [
-                                  OutlinedButton(
-                                      child: const Text('OK'),
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      })
-                                ],
-                              );
-                            });
-                      }
-                    });
-
-                    /// do something
-                  }
-                },
               ),
             ),
             _gap(),

@@ -1,3 +1,4 @@
+import 'package:App/profile/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -10,16 +11,33 @@ class MybookingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text(_title)),
-      body: MyStatefulWidget(email),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text(_title),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios),
+            onPressed: () {
+              Navigator.of(context).pop();
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ProfilePage(
+                            email,
+                          )));
+            },
+          ),
+        ),
+        body: MyStatefulWidget(email),
+      ),
     );
   }
 }
 
-class Abc extends StatelessWidget {
+class Activity extends StatelessWidget {
   final dynamic data;
-  const Abc(this.data, {super.key});
+  const Activity(this.data, {super.key});
 
   String getitString(List list) {
     String name = "";
@@ -33,8 +51,6 @@ class Abc extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('fuck you');
-    print(data);
     return Card(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -61,9 +77,9 @@ class Abc extends StatelessWidget {
   }
 }
 
-class Bcd extends StatelessWidget {
+class Party extends StatelessWidget {
   final dynamic data;
-  const Bcd(this.data, {super.key});
+  const Party(this.data, {super.key});
 
   String getitString(List list) {
     String name = "";
@@ -120,7 +136,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
 
   Future<void> fetchActivities() async {
     final response = await http.post(
-      Uri.parse('http://192.168.122.1:5000/activity/fetch/activities'),
+      Uri.parse('http://192.168.174.180:5000/activity/fetch/activities'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -140,7 +156,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
 
   Future<void> fetchParties() async {
     final response = await http.post(
-      Uri.parse('http://192.168.122.1:5000/activity/fetch/parties'),
+      Uri.parse('http://192.168.174.180:5000/activity/fetch/parties'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -208,10 +224,10 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
                   child: Column(
                     children: index == 0
                         ? Activities.map((elem) {
-                            return Abc(elem);
+                            return Activity(elem);
                           }).toList()
                         : Parties.map((elem) {
-                            return Bcd(elem);
+                            return Party(elem);
                           }).toList(),
                   )),
             ),

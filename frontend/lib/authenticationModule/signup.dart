@@ -87,7 +87,7 @@ class __FormContentState extends State<_FormContent> {
   // Now the action that button performs
   Future<int> loginHandler() async {
     final response = await http.post(
-      Uri.parse('http://192.168.122.1:5000/parent/checkemail'),
+      Uri.parse('http://192.168.174.180:5000/parent/checkemail'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -227,6 +227,41 @@ class __FormContentState extends State<_FormContent> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(4)),
                 ),
+                onPressed: !_rememberMe
+                    ? null
+                    : () {
+                        if (_formKey.currentState?.validate() ?? false) {
+                          loginHandler().then((value) {
+                            if (value == 1) {
+                              // redirect to the OTP page
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          OtpPage(email.text, password.text)));
+                              return;
+                            } else {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: const Text('Error During Sign Up'),
+                                      content:
+                                          const Text('Email Already Exists'),
+                                      actions: [
+                                        OutlinedButton(
+                                            child: const Text('OK'),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            })
+                                      ],
+                                    );
+                                  });
+                              return;
+                            }
+                          });
+                        }
+                      },
                 child: const Padding(
                   padding: EdgeInsets.all(10.0),
                   child: Text(
@@ -234,40 +269,6 @@ class __FormContentState extends State<_FormContent> {
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ),
-                onPressed: () {
-                  if (_formKey.currentState?.validate() ?? false) {
-                    loginHandler().then((value) {
-                      if (value == 1) {
-                        // redirect to the OTP page
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    OtpPage(email.text, password.text)));
-                        return;
-                      } else {
-                        showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                title: const Text('Error During Sign Up'),
-                                content: const Text('Email Already Exists'),
-                                actions: [
-                                  OutlinedButton(
-                                      child: const Text('OK'),
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      })
-                                ],
-                              );
-                            });
-                        return;
-                      }
-                    });
-
-                    /// do something
-                  }
-                },
               ),
             ),
           ],

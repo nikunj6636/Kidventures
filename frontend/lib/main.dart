@@ -15,7 +15,7 @@ Future<void> initasync() async {
   passwordtext = await storage.read(key: "KEY_PASSWORD") ?? '';
 
   final response = await http.post(
-    Uri.parse('http://192.168.122.1:5000/parent/signin'),
+    Uri.parse('http://192.168.174.180:5000/parent/signin'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },

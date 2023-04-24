@@ -5,15 +5,8 @@ class InvoicePage extends StatefulWidget {
   final String email, bookingDate, startTime;
   final int duration, mobileNumber;
   final String adult, children, centerAddress;
-  const InvoicePage(
-      this.email,
-      this.adult,
-      this.children,
-      this.bookingDate,
-      this.startTime,
-      this.duration,
-      this.mobileNumber,
-      this.centerAddress,
+  const InvoicePage(this.email, this.adult, this.children, this.bookingDate,
+      this.startTime, this.duration, this.mobileNumber, this.centerAddress,
       {Key? key})
       : super(key: key);
 
@@ -22,11 +15,10 @@ class InvoicePage extends StatefulWidget {
 }
 
 class _InvoicePageState extends State<InvoicePage> {
- bool infoLoaded = true;
+  bool infoLoaded = true;
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -38,27 +30,25 @@ class _InvoicePageState extends State<InvoicePage> {
                 child: Column(
                   children: [
                     SizedBox(
-                                    height: MediaQuery.of(context).size.height/2 - 260,
-                                  ),
+                      height: MediaQuery.of(context).size.height / 2 - 260,
+                    ),
                     Padding(
                       padding: const EdgeInsets.all(14.0),
                       child: Card(
-                        color: Color.fromARGB(255, 114, 198, 228),
                         shape: RoundedRectangleBorder(
-                          side: const BorderSide(
-                            color: Color.fromARGB(255, 8, 13, 175),
-                          ),
+                          side: const BorderSide(),
                           borderRadius: BorderRadius.circular(20),
-                          
                         ),
                         child: Column(
                           children: <Widget>[
                             const SizedBox(
-                                    height: 20,
-                                  ),
+                              height: 20,
+                            ),
                             ListTile(
-                              
-                              leading: const Icon(Icons.check_circle, color: Color.fromARGB(255, 57, 235, 63),),
+                              leading: const Icon(
+                                Icons.check_circle,
+                                color: Color.fromARGB(255, 57, 235, 63),
+                              ),
                               title: const Text("Booking Details"),
                               subtitle: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,27 +57,6 @@ class _InvoicePageState extends State<InvoicePage> {
                                     height: 10,
                                   ),
                                   const Text('Payment Confirmed'),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  Text('Number of Children: ${widget.children}'),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  Text("Number of Adults ${widget.adult}"),
-                                  const SizedBox(
-                                  height: 10,
-                                ),
-                                  Text(
-                                      "Date of Booking: ${widget.bookingDate}"),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  Text("Start time: ${widget.startTime}"),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  Text("Duration: ${widget.duration} hours"),
                                   const SizedBox(
                                     height: 10,
                                   ),
