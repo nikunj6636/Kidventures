@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 var emailtext = '';
 var passwordtext = '';
 
-main() async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   const storage = FlutterSecureStorage();
   emailtext = await storage.read(key: "KEY_USERNAME") ?? '';
