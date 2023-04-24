@@ -100,7 +100,7 @@ class __FormContentState extends State<_FormContent> {
 
   Future<int> infoHandler() async {
     final response = await http.post(
-      Uri.parse('http://192.168.122.1:5000/parent/signup'),
+      Uri.parse('http://10.1.134.42:5000/parent/signup'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
