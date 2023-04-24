@@ -7,8 +7,8 @@ import 'dart:convert';
 class PaymentGatewayPage extends StatefulWidget {
   final String email, bookingDate, startTime;
   final int duration, mobileNumber;
-  final String adult, children;
-  const PaymentGatewayPage(this.email, this.adult, this.children, this.bookingDate, this.startTime, this.duration, this.mobileNumber, {Key? key}) : super(key: key);
+  final String adult, children, centerAddress;
+  const PaymentGatewayPage(this.email, this.adult, this.children, this.bookingDate, this.startTime, this.duration, this.mobileNumber, this.centerAddress, {Key? key}) : super(key: key);
 
   @override
   State<PaymentGatewayPage> createState() => _PaymentGatewayPageState();
@@ -16,8 +16,23 @@ class PaymentGatewayPage extends StatefulWidget {
 
 class _PaymentGatewayPageState extends State<PaymentGatewayPage> {
 
-  void _handlePaymentSuccess(PaymentSuccessResponse response) {
-    // Do something when payment succeeds
+
+   _handlePaymentSuccess (PaymentSuccessResponse response) async {
+    final response = await http.post(
+      Uri.parse('http://10.1.134.42:5000/activity/confirmParty'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{
+        'startTime': widget.startTime,
+        'duration': widget.duration,
+        'parentEmail' : widget.email,
+        'centerAddress' : widget.centerAddress,
+        'children' : widget.children,
+        'adult' : widget.adult,
+         'bookingDate' : widget.bookingDate,
+      }),
+    );
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
@@ -61,6 +76,7 @@ class _PaymentGatewayPageState extends State<PaymentGatewayPage> {
                   Text("Date of Booking ${widget.bookingDate}"),
                   Text("Start time ${widget.startTime}"),
                   Text("Duration ${widget.duration} hours"),
+                  Text("Center ${widget.centerAddress} hours"),
                   ElevatedButton(onPressed: (){
                         Razorpay razorpay = Razorpay();
                         var options = {

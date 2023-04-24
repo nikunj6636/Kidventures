@@ -14,10 +14,10 @@ List<String> activities = [
   ];
 
 class PaymentGatewayPage extends StatefulWidget {
-  final String email, bookingDate, dropTime;
+  final String email, bookingDate, dropTime, centerId, centerName;
   final int duration, mobileNumber;
   final List<String> selectedActivites, children;
-  const PaymentGatewayPage(this.email, this.children, this.selectedActivites, this.bookingDate, this.dropTime, this.duration, this.mobileNumber, {Key? key}) : super(key: key);
+  const PaymentGatewayPage(this.email, this.children, this.selectedActivites, this.bookingDate, this.dropTime, this.duration, this.mobileNumber, this.centerId, this.centerName, {Key? key}) : super(key: key);
 
   @override
   State<PaymentGatewayPage> createState() => _PaymentGatewayPageState();
@@ -25,8 +25,23 @@ class PaymentGatewayPage extends StatefulWidget {
 
 class _PaymentGatewayPageState extends State<PaymentGatewayPage> {
 
-  void _handlePaymentSuccess(PaymentSuccessResponse response) {
-    // Do something when payment succeeds
+  void _handlePaymentSuccess(PaymentSuccessResponse response) async {
+    final response = await http.post(
+      Uri.parse('http://10.1.134.42:5000/activity/confirmBooking'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{
+        'dropOffTime': widget.dropTime,
+        'duration': widget.duration,
+        'parentEmail' : widget.email,
+        'centerId' : widget.centerId,
+        'childrenString' : widget.children,
+        'activityString' : widget.selectedActivites,
+         'center_address' : widget.centerName,
+         'bookingDate' : widget.bookingDate,
+      }),
+    );
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
@@ -110,6 +125,7 @@ class _PaymentGatewayPageState extends State<PaymentGatewayPage> {
                   Text("Date of Booking ${widget.bookingDate}"),
                   Text("Drop off time ${widget.dropTime}"),
                   Text("Duration ${widget.duration} hours"),
+                  Text("Center ${widget.centerName} hours"),
                   ElevatedButton(onPressed: (){
                         Razorpay razorpay = Razorpay();
                         var options = {

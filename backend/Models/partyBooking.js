@@ -4,8 +4,8 @@ const {ObjectId} = mongoose.Schema.Types;
 const PartyBookingSchema = new mongoose.Schema({
 
   // start time of the party
-  start_off_time: {
-      type: Date,
+  startTime: {
+      type: String,
       required: [true, "Please enter the start time of the party"],
   },
 
@@ -16,21 +16,20 @@ const PartyBookingSchema = new mongoose.Schema({
   },
   
   // ID of the parent who booked
-  parentId: {
-    type: ObjectId,
+  parentEmail: {
+    type: String,
     required: true,
     ref: "Parent",
   },
   
   // ID of the booked center
-  centerId: {
-    type: ObjectId,
+  centerAddress: {
+    type: String,
     required: true,
-    ref: "Center",
   },
 
   // store the time of booking
-  booking_time: {
+  bookingTime: {
     type: Date,
     required: [true, "Please enter the tiem of party booking"],
   },
@@ -45,12 +44,6 @@ const PartyBookingSchema = new mongoose.Schema({
   children: {
     type: Number, 
     required : true,
-  },
-  
-  // transactionid of the party
-  transactionId: {
-    type: String,
-    required: true,
   }
 });
 

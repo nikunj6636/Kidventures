@@ -3,12 +3,6 @@ const {ObjectId} = mongoose.Schema.Types;
 
 const CenterSchema = new mongoose.Schema({
 
-  // Name of the center
-  name: {
-    type: String,
-    required: true,
-  },
-
   // address of the center
   address: {
     type: String,
@@ -17,13 +11,13 @@ const CenterSchema = new mongoose.Schema({
 
   // latitude of center
   latitude: {
-    type: Schema.Types.Decimal128,
+    type: Number,
     required: true,
   },
 
   // longitude of center
   longitude: {
-    type: Schema.Types.Decimal128,
+    type: Number,
     required: true,
   },
 
@@ -45,5 +39,5 @@ const CenterSchema = new mongoose.Schema({
   }],
 });
 
-const Center = mongoose.model("Center", CenterSchema);
-module.exports = Center;
+const centers = mongoose.model("centers", CenterSchema);
+module.exports = centers;

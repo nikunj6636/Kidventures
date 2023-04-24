@@ -193,12 +193,6 @@ class _LocationPageState extends State<LocationPage> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text(
-                                        e['center_name'],
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyLarge,
-                                      ),
                                       Text(e['address'],
                                           style: const TextStyle(
                                             color: Colors.grey,
@@ -230,7 +224,7 @@ class _LocationPageState extends State<LocationPage> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              PaymentGatewayPage(widget.email, widget.children, widget.selectedActivites, widget.bookingDate, widget.dropTime, widget.duration, widget.mobileNumber)));
+                                              PaymentGatewayPage(widget.email, widget.children, widget.selectedActivites, widget.bookingDate, widget.dropTime, widget.duration, widget.mobileNumber, list_of_centers[selectedindex]['center_name'], list_of_centers[selectedindex]['address'])));
                             },
                             child: const Text('Proceed To Payment')),
                         const Text(''),

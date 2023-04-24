@@ -3,10 +3,7 @@ const router = express.Router()
 
 const Parent  = require('../Models/parent')
 const Child  = require('../Models/child')
-
-const bcrypt =  require('bcrypt') 
-const nodemailer = require('nodemailer');
-
+const Center = require('../Models/center')
 
 function distance(lat1,
                      lat2, lon1, lon2)
@@ -39,32 +36,24 @@ function distance(lat1,
 
 // Now handle the location of the user
 router.post('/nearest', async (request,response)=>{
+
+    var list = await Center.find()
+    console.log(list);
     
-    const centers = [
-        {
-            'Latitude' : 17.44215798501415,
-            'Longtitude' : 78.35763801329668,
-            'address' : 'Lingampally Road, Hyderabad - 500032',
-            'ID' : 'CENTRE #1',
+    var centers = [];
 
-        },
-        
-        {
-            'Latitude' :  17.443577315844962,
-            'Longtitude' : 78.36605805461083,
-            'address' : 'Mahabaleshwar clinics, Near Hehe road, Gachibowli Hyderabad 500031',
-            'ID' : 'CENTRE #2',
-        },
-        
-        {
-            'Latitude' : 17.45009531328669,
-            'Longtitude' :  78.33886021962053,
-            'address' : 'Mujes, Kiess, Plot No 43 , Hehe Nagar, Hyderabad',
-            'ID' : 'CENTRE #3',
+    const loopasync = async ()=>{
+        for(let i = 0 ; i < list.length ; i++){
+            centers.push({
+                'Latitude' : list[i].latitude,
+                'Longtitude' : list[i].longitude,
+                'address' : list[i].address,
+                'ID' : list[i]._id,
+            })
+        }
+    }
 
-        },
-
-    ]
+    await loopasync();
 
     const latitude = request.body.latitude 
     const longtitude = request.body.longtitude
@@ -86,6 +75,7 @@ router.post('/nearest', async (request,response)=>{
     })
 
 
+    
     response.status(200).send(distances.slice(0,5)); 
 })
 

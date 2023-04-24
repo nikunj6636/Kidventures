@@ -230,7 +230,7 @@ class _LocationPageState extends State<LocationPage> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              PaymentGatewayPage(widget.email, widget.adult, widget.children, widget.bookingDate, widget.startTime, widget.duration, widget.mobileNumber)));
+                                              PaymentGatewayPage(widget.email, widget.adult, widget.children, widget.bookingDate, widget.startTime, widget.duration, widget.mobileNumber, list_of_centers[selectedindex]['address'])));
                             },
                             child: const Text('Proceed To Payment')),
                         const Text(''),
