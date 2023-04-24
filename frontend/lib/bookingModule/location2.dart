@@ -10,7 +10,10 @@ class LocationPage extends StatefulWidget {
   final String email, bookingDate, startTime;
   final int duration, mobileNumber;
   final String adult, children;
-  const LocationPage(this.email, this.adult, this.children, this.bookingDate, this.startTime, this.duration, this.mobileNumber, {Key? key}) : super(key: key);
+  const LocationPage(this.email, this.adult, this.children, this.bookingDate,
+      this.startTime, this.duration, this.mobileNumber,
+      {Key? key})
+      : super(key: key);
 
   @override
   State<LocationPage> createState() => _LocationPageState();
@@ -112,7 +115,7 @@ class _LocationPageState extends State<LocationPage> {
   bool fetched = false;
   Future<void> fetchCentres() async {
     final response = await http.post(
-      Uri.parse('http://10.1.134.42:5000/location/nearest'),
+      Uri.parse('http://192.168.122.1:5000/location/nearest'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -226,11 +229,19 @@ class _LocationPageState extends State<LocationPage> {
                         Text(''),
                         ElevatedButton(
                             onPressed: () {
-                                Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              PaymentGatewayPage(widget.email, widget.adult, widget.children, widget.bookingDate, widget.startTime, widget.duration, widget.mobileNumber, list_of_centers[selectedindex]['address'])));
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => PaymentGatewayPage(
+                                          widget.email,
+                                          widget.adult,
+                                          widget.children,
+                                          widget.bookingDate,
+                                          widget.startTime,
+                                          widget.duration,
+                                          widget.mobileNumber,
+                                          list_of_centers[selectedindex]
+                                              ['address'])));
                             },
                             child: const Text('Proceed To Payment')),
                         const Text(''),

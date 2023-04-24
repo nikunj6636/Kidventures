@@ -82,8 +82,6 @@ class __FormContentState extends State<_FormContent> {
   bool _isPasswordVisible = false;
   bool _rememberMe = false;
 
-  
-
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
 
@@ -91,9 +89,9 @@ class __FormContentState extends State<_FormContent> {
 
   // Now the action that button performs
   Future<int> loginHandler() async {
-        // Write values
+    // Write values
     final response = await http.post(
-      Uri.parse('http://10.1.134.42:5000/parent/signin'),
+      Uri.parse('http://192.168.122.1:5000/parent/signin'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -105,7 +103,7 @@ class __FormContentState extends State<_FormContent> {
 
     if (response.statusCode == 200) {
       await _storage.write(key: "KEY_USERNAME", value: email.text);
-        await _storage.write(key: "KEY_PASSWORD", value: password.text);
+      await _storage.write(key: "KEY_PASSWORD", value: password.text);
       return 1;
     } else if (response.statusCode == 401) {
       // email does not exist
@@ -118,7 +116,6 @@ class __FormContentState extends State<_FormContent> {
       throw Exception('Failed to connect to server');
     }
   }
-  
 
   @override
   Widget build(BuildContext context) {

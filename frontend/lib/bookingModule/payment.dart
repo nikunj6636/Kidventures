@@ -5,41 +5,51 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 List<String> activities = [
-    // List of activities
-    'Origami',
-    'Painting',
-    'Story telling',
-    'Dancing',
-    'Clay Modelling'
-  ];
+  // List of activities
+  'Origami',
+  'Painting',
+  'Story telling',
+  'Dancing',
+  'Clay Modelling'
+];
 
 class PaymentGatewayPage extends StatefulWidget {
   final String email, bookingDate, dropTime, centerId, centerName;
   final int duration, mobileNumber;
   final List<String> selectedActivites, children;
-  const PaymentGatewayPage(this.email, this.children, this.selectedActivites, this.bookingDate, this.dropTime, this.duration, this.mobileNumber, this.centerId, this.centerName, {Key? key}) : super(key: key);
+  const PaymentGatewayPage(
+      this.email,
+      this.children,
+      this.selectedActivites,
+      this.bookingDate,
+      this.dropTime,
+      this.duration,
+      this.mobileNumber,
+      this.centerId,
+      this.centerName,
+      {Key? key})
+      : super(key: key);
 
   @override
   State<PaymentGatewayPage> createState() => _PaymentGatewayPageState();
 }
 
 class _PaymentGatewayPageState extends State<PaymentGatewayPage> {
-
   void _handlePaymentSuccess(PaymentSuccessResponse response) async {
     final response = await http.post(
-      Uri.parse('http://10.1.134.42:5000/activity/confirmBooking'),
+      Uri.parse('http://192.168.122.1:5000/activity/confirmBooking'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, dynamic>{
         'dropOffTime': widget.dropTime,
         'duration': widget.duration,
-        'parentEmail' : widget.email,
-        'centerId' : widget.centerId,
-        'childrenString' : widget.children,
-        'activityString' : widget.selectedActivites,
-         'center_address' : widget.centerName,
-         'bookingDate' : widget.bookingDate,
+        'parentEmail': widget.email,
+        'centerId': widget.centerId,
+        'childrenString': widget.children,
+        'activityString': widget.selectedActivites,
+        'center_address': widget.centerName,
+        'bookingDate': widget.bookingDate,
       }),
     );
   }
@@ -56,32 +66,30 @@ class _PaymentGatewayPageState extends State<PaymentGatewayPage> {
   bool infoLoaded = false;
   int total = 0;
   getPrice(String activityName) async {
-        // Write 
+    // Write
     final response = await http.post(
-      Uri.parse('http://10.1.134.42:5000/activity/getPrice'),
+      Uri.parse('http://192.168.122.1:5000/activity/getPrice'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, String>{
-        'activity_name':activityName,
+        'activity_name': activityName,
       }),
     );
-  
+
     if (response.statusCode == 200) {
       int cost = jsonDecode(response.body)['price'];
       total += cost * widget.duration;
       String tobeadded = "$activityName     $cost x${widget.duration}";
       prices.add(tobeadded);
-      if(prices.length == widget.selectedActivites.length) {
+      if (prices.length == widget.selectedActivites.length) {
         setState(() {
           infoLoaded = true;
         });
       }
     } else {
-      
       // email does not exist
       return 0;
-      
     }
   }
 
@@ -97,62 +105,70 @@ class _PaymentGatewayPageState extends State<PaymentGatewayPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-
         title: const Text("Billing"),
       ),
       body: infoLoaded == true
-          ?  Center(
-
-              child: Column(
-        
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  const Text(
-                    'Bill',
-                  ),
-                  const Text(
-                    'Children Selected',
-                  ),
-                  for(var item in widget.children) Text(item),
-                  // Text(totalCount.toString()),
-                  // Text(count.toString()),
-                  // Text(errcount.toString()),
-                  const Text(
-                    'Activities Selected',
-                  ),
-                  for(var item in prices) Text(item),
-                  Text("Total $total"),
-                  Text("Date of Booking ${widget.bookingDate}"),
-                  Text("Drop off time ${widget.dropTime}"),
-                  Text("Duration ${widget.duration} hours"),
-                  Text("Center ${widget.centerName} hours"),
-                  ElevatedButton(onPressed: (){
-                        Razorpay razorpay = Razorpay();
-                        var options = {
-                          'key': 'rzp_test_X3Lp0ol12yjPmd',
-                          'amount': total*100,
-                          'name': 'Kidventures',
-                          'description': 'Child Payment',
-                          'retry': {'enabled': true, 'max_count': 1},
-                          'send_sms_hash': true,
-                          'prefill': {'contact': widget.mobileNumber, 'email': widget.email},
-                        };
-                        razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
-                        razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
-                        razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
-                        razorpay.open(options);
-                      },
-                      child: const Text("Pay with Razorpay")),
+          ? Center(
+              child: Card(
+                child: Column(
+                  children: <Widget>[
+                    ListTile(
+                        leading: const Icon(Icons.monetization_on_sharp),
+                        title: const Text('Your Total Bill'),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text('Children Selected: '),
+                            for (var item in widget.children) Text(item),
+                            const Text(
+                              'Activities Selected',
+                            ),
+                            for (var item in prices) Text(item),
+                            Text("Total $total"),
+                            Text("Date of Booking ${widget.bookingDate}"),
+                            Text("Drop off time ${widget.dropTime}"),
+                            Text("Duration ${widget.duration} hours"),
+                            Text("Center ${widget.centerName} hours"),
+                          ],
+                        )),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    ElevatedButton(
+                        onPressed: () {
+                          Razorpay razorpay = Razorpay();
+                          var options = {
+                            'key': 'rzp_test_X3Lp0ol12yjPmd',
+                            'amount': total * 100,
+                            'name': 'Kidventures',
+                            'description': 'Child Payment',
+                            'retry': {'enabled': true, 'max_count': 1},
+                            'send_sms_hash': true,
+                            'prefill': {
+                              'contact': widget.mobileNumber,
+                              'email': widget.email
+                            },
+                          };
+                          razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS,
+                              _handlePaymentSuccess);
+                          razorpay.on(Razorpay.EVENT_PAYMENT_ERROR,
+                              _handlePaymentError);
+                          razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET,
+                              _handleExternalWallet);
+                          razorpay.open(options);
+                        },
+                        child: const Text("Pay with Razorpay")),
                   ],
                 ),
-              )
+              ),
+            )
           : Center(
-                child: Column(
-                children: const [
-                  CircularProgressIndicator(),
-                  Text('Generating your bill...'),
-                ],
-              )),
+              child: Column(
+              children: const [
+                CircularProgressIndicator(),
+                Text('Generating your bill...'),
+              ],
+            )),
     );
   }
 }

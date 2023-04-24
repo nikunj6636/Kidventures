@@ -11,7 +11,8 @@ import 'package:intl/intl.dart';
 class MyActivityModule extends StatefulWidget {
   final String email;
   final int mobileNumber;
-  const MyActivityModule(this.email, this.mobileNumber, {Key? key}) : super(key: key);
+  const MyActivityModule(this.email, this.mobileNumber, {Key? key})
+      : super(key: key);
 
   @override
   State<MyActivityModule> createState() => _MyActivityModule();
@@ -43,7 +44,7 @@ class _MyActivityModule extends State<MyActivityModule> {
 
   Future<void> fetchChild() async {
     final response = await http.post(
-      Uri.parse('http://10.1.134.42:5000/parent/children'),
+      Uri.parse('http://192.168.122.1:5000/parent/children'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -308,7 +309,14 @@ class _MyActivityModule extends State<MyActivityModule> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => LocationPage(widget.email, selected, chosenActivities, bookingDate.text, activityDropTime.text, duration, widget.mobileNumber)));
+                                builder: (context) => LocationPage(
+                                    widget.email,
+                                    selected,
+                                    chosenActivities,
+                                    bookingDate.text,
+                                    activityDropTime.text,
+                                    duration,
+                                    widget.mobileNumber)));
                       } else {
                         showDialog(
                             context: context,

@@ -89,7 +89,6 @@ class _FormContent extends StatefulWidget {
 }
 
 class __FormContentState extends State<_FormContent> {
-
   final _storage = const FlutterSecureStorage();
 
   TextEditingController name = TextEditingController();
@@ -101,7 +100,7 @@ class __FormContentState extends State<_FormContent> {
 
   Future<int> infoHandler() async {
     final response = await http.post(
-      Uri.parse('http://10.1.134.42:5000/parent/signup'),
+      Uri.parse('http://192.168.122.1:5000/parent/signup'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -114,8 +113,8 @@ class __FormContentState extends State<_FormContent> {
     );
 
     if (response.statusCode == 200) {
-       await _storage.write(key: "KEY_USERNAME", value: widget.email);
-        await _storage.write(key: "KEY_PASSWORD", value: widget.password);
+      await _storage.write(key: "KEY_USERNAME", value: widget.email);
+      await _storage.write(key: "KEY_PASSWORD", value: widget.password);
       return 1;
     } else {
       throw Exception('Failed to connect to server');
