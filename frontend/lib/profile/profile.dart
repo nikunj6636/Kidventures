@@ -1,5 +1,6 @@
 import 'package:App/bookingModule/booking.dart';
 import 'package:App/profile/editProfile.dart';
+import 'package:App/profile/myBookings.dart';
 import 'package:flutter/material.dart';
 import 'package:App/authenticationModule/authenMain.dart';
 import 'package:App/profile/addChild.dart';
@@ -49,7 +50,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<void> fetchProfile() async {
     final response = await http.post(
-      Uri.parse('http://10.1.134.42:5000/parent/profile'),
+      Uri.parse('http://192.168.122.1:5000/parent/profile'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -65,7 +66,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
       // children
       final childresponse = await http.post(
-        Uri.parse('http://10.1.134.42:5000/parent/children'),
+        Uri.parse('http://192.168.122.1:5000/parent/children'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -97,7 +98,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<void> addChild(String name, String DOB, String gender) async {
     final response = await http.put(
-      Uri.parse('http://10.1.134.42:5000/parent/update/addchild'),
+      Uri.parse('http://192.168.122.1:5000/parent/update/addchild'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -205,6 +206,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   onTap: () {
                     // Navigate to My Booking Page here
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => MybookingsPage(widget.email)));
                   }),
               ListTile(
                 leading: const Icon(Icons.child_care),

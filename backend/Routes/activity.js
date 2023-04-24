@@ -73,4 +73,81 @@ router.post('/confirmParty', async (req, res) => {
     }
 })
 
+router.post('/fetch/activities', async (req, res) => {
+    const email = req.body.email;
+ 
+    Booking.find({parentEmail: email})
+    .then(response => {
+     response.sort((a,b)=>{
+         var date1 = new Date(Date.parse(a.dropOffTime))
+         var time1 = date1.getTime();
+ 
+         var date2 = new Date(Date.parse(b.dropOffTime))
+         var time2 = date2.getTime();
+ 
+         return time2 - time1; 
+     })
+ 
+     let output = []
+     for(let i = 0 ; i < response.length ; i++){
+ 
+         var elem = response[i].toJSON();
+ 
+         var date1 = new Date(Date.parse(elem.dropOffTime))
+         var time1 = date1.getTime();
+         var curr = new Date();
+         console.log(time1,curr.getTime())
+         var x = (time1 >= curr.getTime());
+ 
+         elem["upcoming"] = x;
+ 
+         output.push(elem)
+     }
+     console.log(output);
+     res.status(200).send(output);
+    })
+    .catch(err => {
+     res.status(400).send(err);
+     })
+ })
+ 
+ 
+ router.post('/fetch/parties', async (req, res) => {
+     const email = req.body.email;
+  
+     Party.find({parentEmail: email})
+     .then(response => {
+      response.sort((a,b)=>{
+          var date1 = new Date(Date.parse(a.dropOffTime))
+          var time1 = date1.getTime();
+  
+          var date2 = new Date(Date.parse(b.dropOffTime))
+          var time2 = date2.getTime();
+  
+          return time2 - time1; 
+      })
+ 
+      let output = []
+     for(let i = 0 ; i < response.length ; i++){
+ 
+         var elem = response[i].toJSON();
+ 
+         var date1 = new Date(Date.parse(elem.dropOffTime))
+         var time1 = date1.getTime();
+         var curr = new Date();
+         console.log(time1,curr.getTime())
+         var x = (time1 >= curr.getTime());
+ 
+         elem["upcoming"] = x;
+ 
+         output.push(elem)
+     }
+     console.log(output);
+     res.status(200).send(output);
+    })
+     .catch(err => {
+      res.status(400).send(err);
+      })
+  })
+  
 module.exports = router

@@ -29,7 +29,7 @@ class _PaymentGatewayPageState extends State<PaymentGatewayPage> {
   _handlePaymentSuccess(PaymentSuccessResponse response) async {
     final navigator = Navigator.of(context);
     final response = await http.post(
-      Uri.parse('http://10.1.134.42:5000/activity/confirmParty'),
+      Uri.parse('http://192.168.122.1:5000/activity/confirmParty'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -43,7 +43,16 @@ class _PaymentGatewayPageState extends State<PaymentGatewayPage> {
         'bookingDate': widget.bookingDate,
       }),
     );
-    navigator.push(MaterialPageRoute(builder: (context) => InvoicePage(widget.email, widget.adult, widget.children, widget.bookingDate, widget.startTime, widget.duration, widget.mobileNumber, widget.centerAddress)));
+    navigator.push(MaterialPageRoute(
+        builder: (context) => InvoicePage(
+            widget.email,
+            widget.adult,
+            widget.children,
+            widget.bookingDate,
+            widget.startTime,
+            widget.duration,
+            widget.mobileNumber,
+            widget.centerAddress)));
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
