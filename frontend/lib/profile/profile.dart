@@ -50,7 +50,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<void> fetchProfile() async {
     final response = await http.post(
-      Uri.parse('http://192.168.174.180:5000/parent/profile'),
+      Uri.parse('http://192.168.183.180:5000/parent/profile'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -66,7 +66,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
       // children
       final childresponse = await http.post(
-        Uri.parse('http://192.168.174.180:5000/parent/children'),
+        Uri.parse('http://192.168.183.180:5000/parent/children'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -98,7 +98,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<void> addChild(String name, String DOB, String gender) async {
     final response = await http.put(
-      Uri.parse('http://192.168.174.180:5000/parent/update/addchild'),
+      Uri.parse('http://192.168.183.180:5000/parent/update/addchild'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },

@@ -96,7 +96,7 @@ class __FormContentState extends State<_FormContent> {
   // Now the action that button performs
   Future<int> passwordChangeHandler() async {
     final response = await http.put(
-      Uri.parse('http://192.168.174.180:5000/parent/changePassword'),
+      Uri.parse('http://192.168.183.180:5000/parent/changePassword'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },

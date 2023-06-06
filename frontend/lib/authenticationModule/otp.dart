@@ -41,7 +41,7 @@ class _OtpPageState extends State<OtpPage> {
   Future<void> sendOTP() async {
     // send OTP to email and fetch it from backend
     final response = await http.post(
-      Uri.parse('http://192.168.174.180:5000/parent/sendOTP'),
+      Uri.parse('http://192.168.183.180:5000/parent/sendOTP'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },

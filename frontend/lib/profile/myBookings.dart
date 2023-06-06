@@ -136,7 +136,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
 
   Future<void> fetchActivities() async {
     final response = await http.post(
-      Uri.parse('http://192.168.174.180:5000/activity/fetch/activities'),
+      Uri.parse('http://192.168.183.180:5000/activity/fetch/activities'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -156,7 +156,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
 
   Future<void> fetchParties() async {
     final response = await http.post(
-      Uri.parse('http://192.168.174.180:5000/activity/fetch/parties'),
+      Uri.parse('http://192.168.183.180:5000/activity/fetch/parties'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },

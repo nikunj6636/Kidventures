@@ -29,7 +29,7 @@ class _PaymentGatewayPageState extends State<PaymentGatewayPage> {
   _handlePaymentSuccess(PaymentSuccessResponse response) async {
     final navigator = Navigator.of(context);
     final response = await http.post(
-      Uri.parse('http://192.168.174.180:5000/activity/confirmParty'),
+      Uri.parse('http://192.168.183.180:5000/activity/confirmParty'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
