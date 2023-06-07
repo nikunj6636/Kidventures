@@ -16,7 +16,7 @@ app.use(express.json());
 
 mongoose.set('strictQuery', false);
 
-const uri = "mongodb+srv://nikunjgarg6636:nikunj6636@cluster0.4lmgshd.mongodb.net/BookingApp?retryWrites=true&w=majority"
+const uri;
 
 mongoose.connect( uri , { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
